@@ -33,7 +33,6 @@ exactly as before — there was never anything to hide for those.
 | File | Purpose |
 |---|---|
 | `server.js` | The proxy + static file server |
-| `.env` | Your real `NASA_API_KEY` — **never commit or publish this file** |
 | `.gitignore` | Already excludes `.env` and `node_modules/` |
 | `package.json` | Dependencies: `express`, `cors`, `dotenv` |
 | `mero-nakshatra.html` | The app itself |
