@@ -1,0 +1,11 @@
+[build]
+  functions = "netlify/functions"
+  publish = "."
+
+# Lets the frontend keep calling the same "/api/apod" path it already uses —
+# Netlify transparently forwards it to the serverless function below.
+[[redirects]]
+  from = "/api/apod"
+  to = "/.netlify/functions/apod"
+  status = 200
+  force = true
