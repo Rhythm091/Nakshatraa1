@@ -1,0 +1,2418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mero Nakshatra — मेरो नक्षत्र</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#05060f;
+    --nebula:#0c1230;
+    --nebula2:#161b42;
+    --cyan:#4defe3;
+    --violet:#9b7cf6;
+    --violet-dim:#6b4fd6;
+    --ink:#eaf0ff;
+    --ink-dim:#9aa3c7;
+    --ink-faint:#5c6491;
+    --glass:rgba(255,255,255,0.045);
+    --glass-border:rgba(255,255,255,0.10);
+    --glass-strong:rgba(255,255,255,0.07);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{
+    background:var(--void);
+    color:var(--ink);
+    font-family:'Space Grotesk', sans-serif;
+    overflow-x:hidden;
+    width:100%;
+  }
+  .display{font-family:'Orbitron', sans-serif;}
+  .mono{font-family:'JetBrains Mono', monospace;}
+
+  #stars{
+    position:fixed; inset:0; width:100%; height:100%; z-index:0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 10%, rgba(155,124,246,0.16), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 85% 30%, rgba(77,239,227,0.10), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 50% 90%, rgba(107,79,214,0.14), transparent 60%),
+      var(--void);
+  }
+
+  .scrim{
+    position:relative; z-index:1; min-height:100vh;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:32px 20px 60px;
+    position:relative;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:0.32em; text-transform:uppercase;
+    color:var(--cyan); opacity:0.85; margin-bottom:18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before, .eyebrow::after{
+    content:''; width:24px; height:1px; background:linear-gradient(90deg, transparent, var(--cyan));
+  }
+  .eyebrow::after{ background:linear-gradient(90deg, var(--cyan), transparent); }
+
+  .hero h1{
+    font-size:clamp(34px, 7vw, 74px);
+    line-height:1.04;
+    font-weight:900;
+    letter-spacing:0.01em;
+    background:linear-gradient(180deg, #ffffff 10%, #c9d4ff 55%, var(--violet) 110%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero .nepali{
+    font-size:clamp(18px, 3.4vw, 28px);
+    color:var(--ink-dim); font-weight:500; margin-top:6px; letter-spacing:0.04em;
+  }
+  .hero p.sub{
+    max-width:520px; margin:22px auto 0; color:var(--ink-dim);
+    font-size:15.5px; line-height:1.6;
+  }
+
+  .form-panel{
+    margin-top:42px; width:min(560px, 92vw);
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    border-radius:20px;
+    padding:28px 24px 24px;
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    box-shadow:0 0 0 1px rgba(255,255,255,0.02), 0 30px 80px -30px rgba(77,239,227,0.10), 0 30px 80px -30px rgba(155,124,246,0.10);
+  }
+  .field-row{ display:flex; gap:12px; flex-wrap:wrap; }
+  .field{ flex:1; min-width:140px; text-align:left; }
+  .field label{
+    display:block; font-family:'JetBrains Mono', monospace; font-size:10.5px;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:8px;
+  }
+  .field input, .field select{
+    width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--glass-border);
+    border-radius:10px; padding:12px 12px; color:var(--ink); font-family:'Space Grotesk', sans-serif;
+    font-size:14.5px; outline:none; transition:border-color .2s, background .2s;
+    color-scheme: dark;
+  }
+  .field input:focus, .field select:focus{
+    border-color:var(--cyan); background:rgba(77,239,227,0.06);
+  }
+  .field .hint{ font-size:11px; color:var(--ink-faint); margin-top:6px; }
+
+  .generate-btn{
+    margin-top:20px; width:100%; padding:15px 20px;
+    border-radius:12px; border:none; cursor:pointer;
+    background:linear-gradient(135deg, var(--cyan), var(--violet));
+    color:#06070f; font-family:'Orbitron', sans-serif; font-weight:700;
+    font-size:13.5px; letter-spacing:0.08em; text-transform:uppercase;
+    box-shadow:0 12px 30px -10px rgba(77,239,227,0.45);
+    transition:transform .15s ease, box-shadow .15s ease;
+    position:relative; overflow:hidden;
+  }
+  .generate-btn:hover{ transform:translateY(-2px); box-shadow:0 18px 40px -10px rgba(155,124,246,0.5); }
+  .generate-btn:active{ transform:translateY(0); }
+  .generate-btn:disabled{ opacity:0.6; cursor:wait; }
+  .err{ color:#ff8a8a; font-size:12px; margin-top:10px; font-family:'JetBrains Mono', monospace; display:none; }
+
+  .scroll-cue{
+    position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
+    color:var(--ink-faint); font-size:10px; letter-spacing:0.2em; text-transform:uppercase;
+    font-family:'JetBrains Mono', monospace; display:flex; flex-direction:column; align-items:center; gap:8px;
+    opacity:0.6; animation: floaty 2.6s ease-in-out infinite;
+  }
+  @keyframes floaty{ 0%,100%{transform:translate(-50%,0);} 50%{transform:translate(-50%,8px);} }
+
+  /* ---------- WARP TRANSITION ---------- */
+  #warp{
+    position:fixed; inset:0; z-index:50; pointer-events:none;
+    background:radial-gradient(circle, rgba(77,239,227,0.0) 0%, rgba(5,6,15,0) 100%);
+    opacity:0; transition:opacity .4s ease;
+  }
+  #warp.active{ opacity:1; }
+
+  /* ---------- REPORT ---------- */
+  #report{ display:none; position:relative; z-index:1; padding:70px 20px 100px; }
+  .report-inner{ max-width:920px; margin:0 auto; }
+
+  .mission-header{ text-align:center; margin-bottom:48px; }
+  .mission-header .tag{
+    font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:0.28em;
+    text-transform:uppercase; color:var(--violet); margin-bottom:12px;
+  }
+  .mission-header h2{
+    font-family:'Orbitron', sans-serif; font-size:clamp(24px,4.4vw,36px); font-weight:700;
+  }
+  .mission-header .sub{ color:var(--ink-dim); font-size:14px; margin-top:8px; }
+
+  .panel{
+    background:var(--glass); border:1px solid var(--glass-border); border-radius:18px;
+    padding:26px 24px; margin-bottom:18px; backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;
+  }
+  .panel.show{ opacity:1; transform:translateY(0); }
+
+  .panel-label{
+    font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:0.2em;
+    text-transform:uppercase; color:var(--cyan); margin-bottom:18px; display:flex; align-items:center; gap:10px;
+  }
+  .panel-label .dot{ width:6px; height:6px; border-radius:50%; background:var(--cyan); box-shadow:0 0 10px var(--cyan); }
+
+  /* Telemetry grid */
+  .telemetry-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(130px,1fr)); gap:14px; }
+  .tcell{
+    background:rgba(255,255,255,0.03); border:1px solid var(--glass-border); border-radius:12px;
+    padding:16px 14px; text-align:center;
+  }
+  .tcell .val{ font-family:'JetBrains Mono', monospace; font-size:clamp(18px,3.4vw,26px); font-weight:700; color:var(--ink); }
+  .tcell .val.cyan{ color:var(--cyan); }
+  .tcell .lbl{ font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-faint); margin-top:6px; }
+
+  .seconds-live{
+    margin-top:16px; text-align:center; padding:18px; border-radius:14px;
+    background:linear-gradient(135deg, rgba(77,239,227,0.08), rgba(155,124,246,0.08));
+    border:1px solid rgba(77,239,227,0.18);
+  }
+  .seconds-live .big{
+    font-family:'JetBrains Mono', monospace; font-size:clamp(22px,5vw,38px); font-weight:700;
+    color:var(--cyan); letter-spacing:0.02em;
+  }
+  .seconds-live .lbl{ font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-top:6px; }
+
+  .countdown-row{ display:flex; justify-content:center; gap:10px; margin-top:16px; flex-wrap:wrap; }
+  .cbox{ background:rgba(255,255,255,0.03); border:1px solid var(--glass-border); border-radius:10px; padding:10px 14px; text-align:center; min-width:64px; }
+  .cbox .n{ font-family:'JetBrains Mono', monospace; font-size:20px; font-weight:700; color:var(--violet); }
+  .cbox .l{ font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-faint); margin-top:4px; }
+
+  /* World snapshot */
+  .snap-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:16px; }
+  .snap-item{ display:flex; align-items:flex-start; gap:12px; }
+  .snap-icon{ font-size:22px; line-height:1; margin-top:2px; }
+  .moon-visual{ flex-shrink:0; margin-top:-2px; }
+  .snap-item h4{ font-size:13px; color:var(--ink-dim); font-weight:600; letter-spacing:0.01em; margin-bottom:4px; }
+  .snap-item .v{ font-family:'JetBrains Mono', monospace; font-size:16px; color:var(--ink); }
+  .snap-item .v.small{ font-family:'Space Grotesk', sans-serif; font-size:13.5px; color:var(--ink-dim); line-height:1.5; }
+
+  .era-badge{
+    display:inline-flex; align-items:center; gap:8px; margin-top:14px;
+    padding:9px 16px; border-radius:999px; background:rgba(155,124,246,0.10);
+    border:1px solid rgba(155,124,246,0.3); font-family:'JetBrains Mono', monospace;
+    font-size:12px; color:var(--violet); letter-spacing:0.04em;
+  }
+
+  /* Events list */
+  .events-list{ display:flex; flex-direction:column; gap:12px; margin-top:6px; }
+  .event-row{ display:flex; gap:14px; align-items:baseline; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .event-row:last-child{ border-bottom:none; padding-bottom:0; }
+  .event-row .yr{ font-family:'JetBrains Mono', monospace; color:var(--cyan); font-size:13px; min-width:48px; }
+  .event-row .tx{ font-size:13.5px; color:var(--ink-dim); line-height:1.5; }
+  .events-status{ font-size:12px; color:var(--ink-faint); font-style:italic; margin-top:4px; }
+
+  /* Music panel */
+  .music-card{
+    display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+  }
+  .music-disc{
+    width:64px; height:64px; border-radius:50%; flex-shrink:0;
+    background:conic-gradient(from 90deg, var(--cyan), var(--violet), var(--cyan));
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 8px 24px -8px rgba(77,239,227,0.4);
+  }
+  .music-disc::after{ content:''; width:18px; height:18px; border-radius:50%; background:var(--void); }
+  .music-info{ flex:1; min-width:180px; }
+  .music-info .yr{ font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--ink-faint); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:4px; }
+  .music-info .song{ font-size:19px; font-weight:600; color:var(--ink); line-height:1.3; }
+  .music-info .artist{ font-size:14px; color:var(--ink-dim); margin-top:2px; }
+  .music-link{
+    display:inline-flex; align-items:center; gap:6px; margin-top:10px;
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; color:var(--cyan);
+    text-decoration:none; border-bottom:1px solid rgba(77,239,227,0.3); padding-bottom:2px;
+  }
+  .music-link:hover{ border-color:var(--cyan); }
+  .music-note{ font-size:11.5px; color:var(--ink-faint); margin-top:14px; font-style:italic; line-height:1.6; }
+
+  /* Cosmic message */
+  .cosmic-msg{
+    font-family:'Space Grotesk', sans-serif; font-size:clamp(16px,2.6vw,19px);
+    line-height:1.75; color:#dde3ff; font-weight:400; text-align:left;
+  }
+  .cosmic-msg .accent{ color:var(--cyan); font-weight:600; }
+  .cosmic-msg .accent2{ color:var(--violet); font-weight:600; }
+
+  /* Shift buttons */
+  .shift-row{ display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; }
+  .shift-btn{
+    flex:1; min-width:150px; padding:11px 14px; border-radius:10px; cursor:pointer;
+    background:rgba(255,255,255,0.04); border:1px solid var(--glass-border); color:var(--ink-dim);
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:0.04em;
+    transition:background .2s, color .2s, border-color .2s;
+  }
+  .shift-btn:hover{ background:rgba(77,239,227,0.08); color:var(--cyan); border-color:rgba(77,239,227,0.3); }
+  .shift-result{ margin-top:12px; font-size:13px; color:var(--ink-dim); display:none; line-height:1.6; }
+
+  /* Card */
+  .card-wrap{ display:flex; flex-direction:column; align-items:center; gap:18px; }
+  #cardCanvas{ width:100%; max-width:380px; border-radius:18px; box-shadow:0 30px 70px -20px rgba(0,0,0,0.6); }
+  .card-actions{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; width:100%; }
+  .card-btn{
+    padding:12px 20px; border-radius:10px; border:1px solid var(--glass-border); cursor:pointer;
+    background:rgba(255,255,255,0.04); color:var(--ink); font-family:'Orbitron', sans-serif;
+    font-size:11.5px; letter-spacing:0.06em; text-transform:uppercase; font-weight:700;
+    transition:transform .15s, background .15s;
+  }
+  .card-btn.primary{ background:linear-gradient(135deg, var(--cyan), var(--violet)); color:#06070f; border:none; }
+  .card-btn:hover{ transform:translateY(-2px); }
+
+  .note{
+    margin-top:36px; text-align:center; font-size:11.5px; color:var(--ink-faint);
+    font-family:'JetBrains Mono', monospace; line-height:1.7; max-width:620px; margin-left:auto; margin-right:auto;
+  }
+  .restart-btn{
+    display:block; margin:30px auto 0; background:none; border:1px solid var(--glass-border);
+    color:var(--ink-dim); padding:10px 22px; border-radius:999px; cursor:pointer;
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+  }
+  .restart-btn:hover{ border-color:var(--cyan); color:var(--cyan); }
+
+  @media (max-width:640px){
+    .field-row{ flex-direction:column; }
+    .panel{ padding:20px 18px; }
+  }
+
+  /* Generic text-content panel (Movies/TV/Games/Sports/Tech) */
+  .textblock{ font-size:14.5px; line-height:1.75; color:var(--ink-dim); }
+  .textblock .src{ display:block; margin-top:12px; font-size:11px; color:var(--ink-faint); font-family:'JetBrains Mono', monospace; }
+  .textblock a{ color:var(--cyan); text-decoration:none; border-bottom:1px solid rgba(77,239,227,0.3); }
+  .fallback-note{ font-size:13px; color:var(--ink-faint); font-style:italic; line-height:1.6; }
+
+  /* Economy */
+  .fx-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:12px; margin-top:4px; }
+  .fx-cell{ background:rgba(255,255,255,0.03); border:1px solid var(--glass-border); border-radius:12px; padding:14px; text-align:center; }
+  .fx-cell .pair{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--ink-faint); letter-spacing:0.06em; }
+  .fx-cell .rate{ font-family:'JetBrains Mono', monospace; font-size:19px; color:var(--cyan); font-weight:700; margin-top:6px; }
+
+  /* Weather */
+  .weather-card{ display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .weather-icon{ font-size:44px; line-height:1; }
+  .weather-stats{ display:flex; gap:22px; flex-wrap:wrap; }
+  .weather-stat .v{ font-family:'JetBrains Mono', monospace; font-size:20px; color:var(--ink); }
+  .weather-stat .l{ font-size:10.5px; color:var(--ink-faint); letter-spacing:0.08em; text-transform:uppercase; margin-top:3px; }
+
+  /* Map embeds */
+  .map-embed{ width:100%; border-radius:14px; overflow:hidden; border:1px solid var(--glass-border); margin-top:6px; }
+  .map-embed iframe{ width:100%; height:280px; border:0; display:block; filter:grayscale(0.15) contrast(1.05); }
+
+  /* Sky map (illustrative) */
+  .skymap-wrap{ display:flex; justify-content:center; margin-top:6px; }
+  .skymap-caption{ text-align:center; font-size:11px; color:var(--ink-faint); font-style:italic; margin-top:10px; }
+
+  /* Life stats grid */
+  .life-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:14px; }
+  .life-cell{ background:rgba(255,255,255,0.03); border:1px solid var(--glass-border); border-radius:12px; padding:16px 14px; text-align:center; }
+  .life-cell .icon{ font-size:20px; margin-bottom:8px; }
+  .life-cell .v{ font-family:'JetBrains Mono', monospace; font-size:17px; color:var(--violet); font-weight:700; }
+  .life-cell .l{ font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-faint); margin-top:5px; }
+  .life-note{ font-size:11px; color:var(--ink-faint); font-style:italic; margin-top:14px; }
+
+  /* Timeline of life */
+  .timeline{ position:relative; padding-left:26px; margin-top:6px; }
+  .timeline::before{ content:''; position:absolute; left:6px; top:4px; bottom:4px; width:1.5px; background:linear-gradient(180deg, var(--cyan), var(--violet)); opacity:0.4; }
+  .tl-item{ position:relative; padding-bottom:20px; }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-item::before{ content:''; position:absolute; left:-26px; top:3px; width:9px; height:9px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px var(--cyan); }
+  .tl-item.future::before{ background:var(--violet); box-shadow:0 0 8px var(--violet); }
+  .tl-item .tl-label{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--cyan); letter-spacing:0.05em; }
+  .tl-item.future .tl-label{ color:var(--violet); }
+  .tl-item .tl-desc{ font-size:13.5px; color:var(--ink-dim); margin-top:3px; line-height:1.5; }
+
+  /* Config note banner */
+  .config-note{
+    font-size:11.5px; color:var(--ink-faint); font-family:'JetBrains Mono', monospace;
+    background:rgba(155,124,246,0.05); border:1px solid rgba(155,124,246,0.15); border-radius:10px;
+    padding:10px 14px; margin-top:14px; line-height:1.6;
+  }
+
+  ::selection{ background:rgba(77,239,227,0.3); }
+
+  /* ---------- MILKY WAY BAND ---------- */
+  #milkyway{
+    position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.55;
+    background:
+      linear-gradient(115deg, transparent 30%, rgba(200,190,255,0.05) 42%, rgba(220,215,255,0.10) 48%, rgba(200,190,255,0.09) 52%, rgba(180,170,240,0.05) 58%, transparent 70%);
+    mix-blend-mode:screen;
+  }
+
+  /* ---------- WARP CANVAS ---------- */
+  #warpCanvas{ position:absolute; inset:0; width:100%; height:100%; }
+
+  /* ---------- GLOBE / 3D PANEL ---------- */
+  .globe-stage{
+    position:relative; width:100%; aspect-ratio:1/1; max-width:340px; margin:0 auto;
+    border-radius:50%; cursor:grab; touch-action:none;
+  }
+  .globe-stage:active{ cursor:grabbing; }
+  .globe-stage canvas{ display:block; width:100% !important; height:100% !important; border-radius:50%; }
+  .globe-hint{
+    text-align:center; font-size:11px; color:var(--ink-faint); font-family:'JetBrains Mono', monospace;
+    letter-spacing:0.06em; text-transform:uppercase; margin-top:14px;
+  }
+  .orbit-readout{
+    margin-top:18px; display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px;
+  }
+  .orbit-readout .tcell .val{ font-size:clamp(16px,3vw,22px); }
+
+  /* ---------- CONSTELLATION MAP ---------- */
+  .const-wrap{ position:relative; }
+  .const-star{ cursor:pointer; transition:r .15s; }
+  .const-star:hover{ r:3.4; }
+  .const-tip{
+    position:absolute; pointer-events:none; background:rgba(10,12,30,0.92); border:1px solid var(--glass-border);
+    border-radius:8px; padding:6px 10px; font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--cyan);
+    transform:translate(-50%,-130%); white-space:nowrap; opacity:0; transition:opacity .12s; z-index:5;
+  }
+  .const-tip.show{ opacity:1; }
+
+  /* ---------- THEN & NOW EXPLORER ---------- */
+  .slider-row{ margin-top:8px; margin-bottom:22px; }
+  .slider-row input[type=range]{
+    width:100%; -webkit-appearance:none; appearance:none; height:4px; border-radius:4px;
+    background:linear-gradient(90deg, var(--cyan), var(--violet)); outline:none; cursor:pointer;
+  }
+  .slider-row input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:18px; height:18px; border-radius:50%;
+    background:#fff; border:3px solid var(--violet); cursor:pointer; box-shadow:0 0 10px rgba(155,124,246,0.6);
+  }
+  .slider-row input[type=range]::-moz-range-thumb{
+    width:18px; height:18px; border-radius:50%; background:#fff; border:3px solid var(--violet); cursor:pointer;
+  }
+  .slider-yr{
+    text-align:center; font-family:'Orbitron', sans-serif; font-size:22px; font-weight:700; color:var(--ink);
+    margin-top:10px;
+  }
+  .then-now-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-top:6px; }
+  .tn-cell{
+    background:rgba(255,255,255,0.03); border:1px solid var(--glass-border); border-radius:12px; padding:14px;
+  }
+  .tn-cell .tn-lbl{ font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:6px; }
+  .tn-cell .tn-v{ font-family:'JetBrains Mono', monospace; font-size:15px; color:var(--cyan); line-height:1.4; }
+  .country-row{ display:flex; gap:12px; align-items:center; margin-top:22px; flex-wrap:wrap; }
+  .country-row select{
+    flex:1; min-width:160px; background:rgba(255,255,255,0.04); border:1px solid var(--glass-border);
+    border-radius:10px; padding:10px 12px; color:var(--ink); font-family:'Space Grotesk', sans-serif; font-size:14px;
+    color-scheme:dark;
+  }
+  #countryCompare{ margin-top:14px; }
+
+  /* ---------- TIME CAPSULE ---------- */
+  .capsule-form textarea{
+    width:100%; min-height:100px; resize:vertical; background:rgba(255,255,255,0.04);
+    border:1px solid var(--glass-border); border-radius:12px; padding:12px 14px; color:var(--ink);
+    font-family:'Space Grotesk', sans-serif; font-size:14px; outline:none;
+  }
+  .capsule-form textarea:focus{ border-color:var(--cyan); }
+  .capsule-controls{ display:flex; gap:12px; margin-top:12px; flex-wrap:wrap; align-items:center; }
+  .capsule-controls input[type=date]{
+    background:rgba(255,255,255,0.04); border:1px solid var(--glass-border); border-radius:10px;
+    padding:10px 12px; color:var(--ink); font-family:'Space Grotesk', sans-serif; font-size:13.5px; color-scheme:dark;
+  }
+  .capsule-seal-btn{
+    padding:11px 20px; border-radius:10px; border:none; cursor:pointer;
+    background:linear-gradient(135deg, var(--cyan), var(--violet)); color:#06070f;
+    font-family:'Orbitron', sans-serif; font-weight:700; font-size:11.5px; letter-spacing:0.06em; text-transform:uppercase;
+  }
+  .capsule-list{ margin-top:20px; display:flex; flex-direction:column; gap:12px; }
+  .capsule-item{
+    background:rgba(255,255,255,0.03); border:1px solid var(--glass-border); border-radius:12px; padding:14px 16px;
+  }
+  .capsule-item .cap-meta{ font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--ink-faint); letter-spacing:0.05em; }
+  .capsule-item .cap-msg{ margin-top:8px; font-size:13.5px; color:var(--ink-dim); line-height:1.6; }
+  .capsule-item.ready{ border-color:rgba(77,239,227,0.35); }
+  .capsule-item.ready .cap-meta{ color:var(--cyan); }
+  .capsule-item .cap-del{
+    margin-top:10px; background:none; border:none; color:var(--ink-faint); font-family:'JetBrains Mono', monospace;
+    font-size:10.5px; cursor:pointer; text-decoration:underline; padding:0;
+  }
+  .capsule-item .cap-del:hover{ color:#ff8a8a; }
+  .capsule-status{ font-size:12px; color:var(--cyan); margin-top:10px; min-height:16px; }
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+<div id="stars"></div>
+<div id="milkyway"></div>
+<div id="warp"><canvas id="warpCanvas"></canvas></div>
+
+<div class="scrim">
+
+  <!-- HERO -->
+  <section class="hero" id="heroSection">
+    <div class="eyebrow">Mission Control · Cosmic Origin Scan</div>
+    <h1 class="display">MERO NAKSHATRA</h1>
+    <div class="nepali">मेरो नक्षत्र</div>
+    <p class="sub">Enter your birth coordinates in time. We'll reconstruct the universe, the world, and the moment exactly as they were when you arrived.</p>
+
+    <div class="form-panel">
+      <div class="field-row">
+        <div class="field">
+          <label for="birthDate">Birth date *</label>
+          <input type="date" id="birthDate" required />
+        </div>
+        <div class="field">
+          <label for="birthTime">Birth time</label>
+          <input type="time" id="birthTime" />
+          <div class="hint">Optional — defaults to local noon</div>
+        </div>
+      </div>
+      <div class="field-row" style="margin-top:12px;">
+        <div class="field">
+          <label for="birthPlace">Place of birth</label>
+          <input type="text" id="birthPlace" placeholder="e.g. Kathmandu, Nepal" />
+          <div class="hint">Optional — used in your cosmic message</div>
+        </div>
+      </div>
+      <button class="generate-btn display" id="genBtn">Generate My Nakshatra</button>
+      <div class="err" id="errMsg">Please enter a valid birth date.</div>
+    </div>
+
+    <div class="scroll-cue">⌄ &nbsp; Enter your data above</div>
+  </section>
+
+  <!-- REPORT -->
+  <section id="report">
+    <div class="report-inner">
+
+      <div class="mission-header">
+        <div class="tag display">// Transmission received</div>
+        <h2 id="reportTitle">Your Cosmic Birth Report</h2>
+        <div class="sub" id="reportSub"></div>
+      </div>
+
+      <!-- TELEMETRY -->
+      <div class="panel" id="panelTelemetry">
+        <div class="panel-label"><span class="dot"></span>Mission Telemetry — Time Lived</div>
+        <div class="telemetry-grid" id="telemetryGrid"></div>
+        <div class="seconds-live">
+          <div class="big mono" id="liveSeconds">0</div>
+          <div class="lbl">seconds in orbit, and counting</div>
+        </div>
+        <div class="countdown-row" id="countdownRow"></div>
+      </div>
+
+      <!-- LIVE ORBIT / 3D GLOBE -->
+      <div class="panel" id="panelGlobe">
+        <div class="panel-label"><span class="dot"></span>🌐 Live Orbit View</div>
+        <div class="globe-stage" id="globeStage"></div>
+        <div class="globe-hint">Drag to rotate · Earth spins, the Moon orbits, both in real proportion of speed</div>
+        <div class="orbit-readout telemetry-grid" id="orbitReadout"></div>
+        <div class="fallback-note" style="margin-top:12px;">Illustrative 3D model (procedural textures, not satellite imagery) — rotation and orbit are animated for clarity, not real-time speed.</div>
+      </div>
+
+      <!-- WORLD SNAPSHOT -->
+      <div class="panel" id="panelWorld">
+        <div class="panel-label"><span class="dot"></span>🌍 World Snapshot at Birth</div>
+        <div class="snap-grid" id="snapGrid"></div>
+        <div id="eraBadgeWrap"></div>
+        <div class="fallback-note" style="margin-top:12px;">Population figures interpolated from United Nations / World Bank historical population estimates.</div>
+      </div>
+
+      <!-- THEN & NOW EXPLORER -->
+      <div class="panel" id="panelThenNow">
+        <div class="panel-label"><span class="dot"></span>📊 Then vs. Now Explorer</div>
+        <div class="slider-row">
+          <input type="range" id="thenNowSlider" min="0" max="100" value="0" />
+          <div class="slider-yr" id="thenNowYear">—</div>
+        </div>
+        <div class="then-now-grid" id="thenNowGrid"></div>
+        <div class="country-row">
+          <label for="countrySelect" style="font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--ink-faint); letter-spacing:0.08em; text-transform:uppercase;">Compare a country now →</label>
+          <select id="countrySelect">
+            <option value="">Select a country…</option>
+          </select>
+        </div>
+        <div id="countryCompare"></div>
+        <div class="fallback-note" style="margin-top:14px;">Global numeric trends (population, internet users, GDP, CO₂) are curated historical estimates, interpolated between known data points — not a live per-day feed. Country data is fetched live from the REST Countries API.</div>
+      </div>
+
+      <!-- SPACE SNAPSHOT -->
+      <div class="panel" id="panelSpace">
+        <div class="panel-label"><span class="dot"></span>🛰 Space Snapshot</div>
+        <div id="spaceContent"></div>
+      </div>
+
+      <!-- HISTORICAL EVENTS -->
+      <div class="panel" id="panelEvents">
+        <div class="panel-label"><span class="dot"></span>📅 On This Day, In History</div>
+        <div class="events-list" id="eventsList"></div>
+        <div class="events-status" id="eventsStatus"></div>
+        <div class="config-note">Sourced live from Wikipedia's "On This Day" archive. Richer newspaper archives (NYT, The Guardian) require a personal API key not available in this environment — see the <code>API_KEYS</code> block near the top of the script if you want to add your own.</div>
+      </div>
+
+      <!-- FAMOUS PEOPLE -->
+      <div class="panel" id="panelFamous">
+        <div class="panel-label"><span class="dot"></span>👥 Famous People Born Today</div>
+        <div class="events-list" id="famousList"></div>
+        <div class="events-status" id="famousStatus"></div>
+      </div>
+
+      <!-- MUSIC SNAPSHOT -->
+      <div class="panel" id="panelMusic">
+        <div class="panel-label"><span class="dot"></span>🎵 Music of Your Era</div>
+        <div id="musicContent"></div>
+      </div>
+
+      <!-- MOVIES -->
+      <div class="panel" id="panelMovies">
+        <div class="panel-label"><span class="dot"></span>🎬 Movies of Your Era</div>
+        <div class="textblock" id="moviesContent">Loading…</div>
+      </div>
+
+      <!-- TV SHOWS -->
+      <div class="panel" id="panelTV">
+        <div class="panel-label"><span class="dot"></span>📺 TV Shows of Your Era</div>
+        <div class="textblock" id="tvContent">Loading…</div>
+      </div>
+
+      <!-- VIDEO GAMES -->
+      <div class="panel" id="panelGames">
+        <div class="panel-label"><span class="dot"></span>🎮 Video Games of Your Era</div>
+        <div class="textblock" id="gamesContent">Loading…</div>
+      </div>
+
+      <!-- TECHNOLOGY -->
+      <div class="panel" id="panelTech">
+        <div class="panel-label"><span class="dot"></span>📱 Technology of Your Era</div>
+        <div id="techContent"></div>
+      </div>
+
+      <!-- SPORTS -->
+      <div class="panel" id="panelSports">
+        <div class="panel-label"><span class="dot"></span>🏆 Sports Snapshot</div>
+        <div class="textblock" id="sportsContent">Loading…</div>
+      </div>
+
+      <!-- ECONOMY -->
+      <div class="panel" id="panelEconomy">
+        <div class="panel-label"><span class="dot"></span>💰 Economy Snapshot</div>
+        <div id="economyContent">Loading…</div>
+      </div>
+
+      <!-- WEATHER -->
+      <div class="panel" id="panelWeather">
+        <div class="panel-label"><span class="dot"></span>🌤 Weather at Birth</div>
+        <div id="weatherContent"><div class="fallback-note">Enter a place of birth above to look up historical weather.</div></div>
+      </div>
+
+      <!-- WORLD MAP -->
+      <div class="panel" id="panelMap">
+        <div class="panel-label"><span class="dot"></span>🌎 Interactive World Map</div>
+        <div id="mapContent"><div class="fallback-note">Enter a place of birth above to see it on the map.</div></div>
+      </div>
+
+      <!-- SKY MAP -->
+      <div class="panel" id="panelSky">
+        <div class="panel-label"><span class="dot"></span>🌌 Interactive Sky Map</div>
+        <div class="skymap-wrap" id="skymapWrap"></div>
+        <div class="skymap-caption">Illustrative rendering of the moon phase and solar zodiac position — not a precise planetarium (exact planetary positions require dedicated ephemeris software).</div>
+        <div class="const-wrap" id="constWrap" style="margin-top:22px;"></div>
+        <div class="skymap-caption" id="constCaption"></div>
+      </div>
+
+      <!-- BIRTH COHORT -->
+      <div class="panel" id="panelCohort">
+        <div class="panel-label"><span class="dot"></span>👶 Birth Cohort</div>
+        <div class="snap-item">
+          <div class="snap-icon">👶</div>
+          <div>
+            <h4>You shared this Nakshatra moment with roughly</h4>
+            <div class="v" id="cohortVal">—</div>
+            <div class="v small">other humans, born the same day, across the planet.</div>
+          </div>
+        </div>
+        <div class="fallback-note" style="margin-top:12px;">Estimated from UN global crude birth rate statistics — not a live registry count.</div>
+      </div>
+
+      <!-- LIFE STATISTICS -->
+      <div class="panel" id="panelLifeStats">
+        <div class="panel-label"><span class="dot"></span>❤️ Life Statistics</div>
+        <div class="life-grid" id="lifeStatsGrid"></div>
+        <div class="life-note">Estimated using standard average physiological rates (heart rate, breathing rate, sleep share of day) applied to your total time lived — actual personal figures vary.</div>
+      </div>
+
+      <!-- COSMIC MESSAGE -->
+      <div class="panel" id="panelMessage">
+        <div class="panel-label"><span class="dot"></span>🤖 AI Cosmic Story</div>
+        <div class="cosmic-msg" id="cosmicMsg"></div>
+      </div>
+
+      <!-- DIVERGENCE -->
+      <div class="panel" id="panelShift">
+        <div class="panel-label"><span class="dot"></span>🪐 Divergent Timelines</div>
+        <div class="snap-item"><div class="snap-icon">🌀</div><div class="v small">See how your story would have shifted, born a year off course.</div></div>
+        <div class="shift-row">
+          <button class="shift-btn" data-shift="-1">⟵ One year earlier</button>
+          <button class="shift-btn" data-shift="1">One year later ⟶</button>
+        </div>
+        <div class="shift-result" id="shiftResult"></div>
+      </div>
+
+      <!-- TIMELINE OF LIFE -->
+      <div class="panel" id="panelTimeline">
+        <div class="panel-label"><span class="dot"></span>📈 Timeline of Your Life</div>
+        <div class="timeline" id="lifeTimeline"></div>
+      </div>
+
+      <!-- TIME CAPSULE -->
+      <div class="panel" id="panelCapsule">
+        <div class="panel-label"><span class="dot"></span>📖 Time Capsule — A Letter to Your Future Self</div>
+        <div class="snap-item small" style="margin-bottom:14px;"><div class="v small">Write something for future-you. Seal it with an "open on" date, and it'll wait right here until then.</div></div>
+        <div class="capsule-form">
+          <textarea id="capsuleMsg" placeholder="Dear future me…" maxlength="4000"></textarea>
+          <div class="capsule-controls">
+            <input type="date" id="capsuleDate" />
+            <button class="capsule-seal-btn" id="capsuleSealBtn">🔒 Seal Capsule</button>
+          </div>
+          <div class="capsule-status" id="capsuleStatus"></div>
+        </div>
+        <div class="capsule-list" id="capsuleList"></div>
+        <div class="config-note" style="margin-top:16px;">⚠️ This capsule is stored with this page in your browser/account — it is <strong>not emailed</strong> to you, since a static page has no server to schedule that. If you clear site data, switch browsers, or open this page from elsewhere, sealed capsules won't follow you. For a guaranteed future delivery, use the "Email myself a copy" link below to send it to your own inbox as a backup, or set a calendar reminder.</div>
+      </div>
+
+      <!-- CARD -->
+      <div class="panel" id="panelCard">
+        <div class="panel-label"><span class="dot"></span>📤 Shareable Cosmic Card</div>
+        <div class="card-wrap">
+          <canvas id="cardCanvas" width="760" height="1140"></canvas>
+          <div class="card-actions">
+            <button class="card-btn primary" id="downloadBtn">Download Card</button>
+            <button class="card-btn" id="openImageBtn">Open Image</button>
+            <button class="card-btn" id="shareBtn">Share</button>
+          </div>
+          <div class="music-note" style="text-align:center;">If "Download Card" doesn't start a file, use "Open Image" — it opens full-size in a new tab where you can long-press (mobile) or right-click → Save Image (desktop).</div>
+        </div>
+      </div>
+
+      <div class="note">
+        This report blends three kinds of data: (1) live lookups — Wikipedia On This Day, Wikipedia year-summary pages, Open-Meteo weather &amp; geocoding, Frankfurter/ECB exchange rates, NASA's Astronomy Picture of the Day; (2) calculated facts — moon phase, zodiac, age, life statistics, all computed directly from your birth date/time with no API involved; (3) curated historical datasets — world population, Billboard Year-End chart-toppers — clearly labeled where used. When a live source is unreachable or a data point predates its coverage, the relevant panel says so plainly instead of guessing. Nothing on this page is invented.
+      </div>
+
+      <button class="restart-btn" id="restartBtn">↺ Run another scan</button>
+    </div>
+  </section>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ============== CONFIG ============== */
+// Optional: add your own personal API keys here to unlock premium newspaper archives.
+// None of these are required — every panel in this app works without them, falling
+// back to free/keyless sources. Never commit real keys into a publicly shared file.
+//
+// NASA key note: if you're running the bundled server.js (see mero-nakshatra-server/),
+// your real NASA key lives server-side in that folder's .env file and never appears here.
+// This page automatically prefers that server's /api/apod proxy when it's running, and
+// only falls back to the public DEMO_KEY below when it isn't.
+const API_KEYS = {
+  NYT_ARCHIVE: '',      // https://developer.nytimes.com/docs/archive-product/1/overview
+  GUARDIAN: '',         // https://open-platform.theguardian.com/access/
+  TMDB: '',             // https://www.themoviedb.org/settings/api
+  NASA: 'DEMO_KEY',     // https://api.nasa.gov/ — DEMO_KEY works but is rate-limited & shared publicly
+};
+
+/* Generic fetch-with-timeout so a hung request can't stall a whole panel */
+async function fetchJSON(url, timeoutMs = 8000){
+  const controller = new AbortController();
+  const t = setTimeout(() => controller.abort(), timeoutMs);
+  try{
+    const res = await fetch(url, {signal: controller.signal});
+    clearTimeout(t);
+    if(!res.ok) return null;
+    return await res.json();
+  }catch(e){
+    clearTimeout(t);
+    return null;
+  }
+}
+
+/* Wikipedia REST summary endpoint — used for "{year} in film/television/video gaming/sports"
+   context blurbs. This is Wikipedia's own excerpt API, designed for exactly this kind of reuse. */
+async function fetchWikiSummary(title){
+  try{
+    const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`;
+    const json = await fetchJSON(url);
+    if(json && json.extract && json.extract.length > 10){
+      return {
+        extract: json.extract,
+        pageUrl: (json.content_urls && json.content_urls.desktop && json.content_urls.desktop.page) || `https://en.wikipedia.org/wiki/${encodeURIComponent(title)}`,
+        title: json.title || title
+      };
+    }
+    return null;
+  }catch(e){ return null; }
+}
+
+/* ============== STARFIELD ============== */
+const canvas = document.getElementById('starfield');
+const ctx = canvas.getContext('2d');
+let stars = [];
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+function initStars(){
+  resizeCanvas();
+  const count = Math.floor((canvas.width * canvas.height) / 9000);
+  stars = Array.from({length: count}, () => ({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    r: Math.random()*1.3 + 0.2,
+    baseAlpha: Math.random()*0.6 + 0.2,
+    speed: Math.random()*0.15 + 0.02,
+    twinkleSpeed: Math.random()*0.02 + 0.005,
+    twinklePhase: Math.random()*Math.PI*2,
+    hue: Math.random() > 0.85 ? (Math.random() > 0.5 ? 'cyan' : 'violet') : 'white'
+  }));
+}
+/* ---- Shooting stars ---- */
+let shootingStars = [];
+let nextShootAt = performance.now() + 2000 + Math.random()*4000;
+function spawnShootingStar(){
+  const fromTop = Math.random() > 0.35;
+  const x = fromTop ? Math.random()*canvas.width*0.7 : -20;
+  const y = fromTop ? -20 : Math.random()*canvas.height*0.5;
+  const angle = Math.PI/4 + (Math.random()*0.3 - 0.15); // ~45deg diagonal
+  const speed = 9 + Math.random()*6;
+  shootingStars.push({
+    x, y,
+    vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed,
+    life: 0, maxLife: 40 + Math.random()*20,
+    len: 70 + Math.random()*60
+  });
+}
+function drawShootingStars(){
+  const now = performance.now();
+  if(now > nextShootAt && shootingStars.length < 3){
+    spawnShootingStar();
+    nextShootAt = now + 3500 + Math.random()*5500;
+  }
+  shootingStars = shootingStars.filter(s => s.life < s.maxLife);
+  for(const s of shootingStars){
+    s.life++;
+    s.x += s.vx; s.y += s.vy;
+    const fade = 1 - (s.life/s.maxLife);
+    const tailX = s.x - Math.cos(Math.atan2(s.vy,s.vx))*s.len;
+    const tailY = s.y - Math.sin(Math.atan2(s.vy,s.vx))*s.len;
+    const grad = ctx.createLinearGradient(s.x, s.y, tailX, tailY);
+    grad.addColorStop(0, `rgba(255,255,255,${0.9*fade})`);
+    grad.addColorStop(1, `rgba(255,255,255,0)`);
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.moveTo(s.x, s.y);
+    ctx.lineTo(tailX, tailY);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(255,255,255,${fade})`;
+    ctx.arc(s.x, s.y, 1.8, 0, Math.PI*2);
+    ctx.fill();
+  }
+}
+
+function drawStars(t){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(const s of stars){
+    s.twinklePhase += s.twinkleSpeed;
+    const alpha = s.baseAlpha * (0.6 + 0.4*Math.sin(s.twinklePhase));
+    let color = '255,255,255';
+    if(s.hue === 'cyan') color = '77,239,227';
+    if(s.hue === 'violet') color = '155,124,246';
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(${color},${alpha})`;
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fill();
+    s.y += s.speed;
+    if(s.y > canvas.height) { s.y = -2; s.x = Math.random()*canvas.width; }
+  }
+  drawShootingStars();
+  requestAnimationFrame(drawStars);
+}
+initStars();
+requestAnimationFrame(drawStars);
+window.addEventListener('resize', initStars);
+
+/* ---- Space-zoom warp transition (canvas streak burst) ---- */
+function runWarpZoom(durationMs){
+  const wc = document.getElementById('warpCanvas');
+  const wctx = wc.getContext('2d');
+  wc.width = window.innerWidth; wc.height = window.innerHeight;
+  const cx = wc.width/2, cy = wc.height/2;
+  const streaks = Array.from({length: 140}, () => ({
+    angle: Math.random()*Math.PI*2,
+    dist: Math.random()*60,
+    speed: 6 + Math.random()*14,
+    len: 20 + Math.random()*30
+  }));
+  const start = performance.now();
+  function frame(now){
+    const elapsed = now - start;
+    const p = Math.min(elapsed/durationMs, 1);
+    wctx.fillStyle = `rgba(5,6,15,${0.35})`;
+    wctx.fillRect(0,0,wc.width,wc.height);
+    for(const s of streaks){
+      s.dist += s.speed * (1 + p*3);
+      const x1 = cx + Math.cos(s.angle)*s.dist;
+      const y1 = cy + Math.sin(s.angle)*s.dist;
+      const x2 = cx + Math.cos(s.angle)*(s.dist - s.len);
+      const y2 = cy + Math.sin(s.angle)*(s.dist - s.len);
+      const grad = wctx.createLinearGradient(x1,y1,x2,y2);
+      grad.addColorStop(0, `rgba(180,220,255,${0.85*(1-p*0.3)})`);
+      grad.addColorStop(1, 'rgba(180,220,255,0)');
+      wctx.strokeStyle = grad;
+      wctx.lineWidth = 1.4;
+      wctx.beginPath();
+      wctx.moveTo(x1,y1); wctx.lineTo(x2,y2);
+      wctx.stroke();
+    }
+    if(elapsed < durationMs){
+      requestAnimationFrame(frame);
+    } else {
+      wctx.clearRect(0,0,wc.width,wc.height);
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ============== ASTRO / TIME HELPERS ============== */
+function pad(n, len=2){ return String(n).padStart(len,'0'); }
+
+function getMoonPhase(date){
+  // Days since known new moon: Jan 6, 2000, 18:14 UTC
+  const knownNewMoon = new Date(Date.UTC(2000,0,6,18,14));
+  const synodic = 29.530588853;
+  const diffDays = (date.getTime() - knownNewMoon.getTime()) / 86400000;
+  let phase = diffDays % synodic;
+  if(phase < 0) phase += synodic;
+  const phaseFrac = phase / synodic;
+  const phases = [
+    {max:0.03, name:'New Moon', icon:'🌑'},
+    {max:0.22, name:'Waxing Crescent', icon:'🌒'},
+    {max:0.28, name:'First Quarter', icon:'🌓'},
+    {max:0.47, name:'Waxing Gibbous', icon:'🌔'},
+    {max:0.53, name:'Full Moon', icon:'🌕'},
+    {max:0.72, name:'Waning Gibbous', icon:'🌖'},
+    {max:0.78, name:'Last Quarter', icon:'🌗'},
+    {max:0.97, name:'Waning Crescent', icon:'🌘'},
+    {max:1.01, name:'New Moon', icon:'🌑'}
+  ];
+  for(const p of phases){ if(phaseFrac <= p.max) return {...p, phaseFrac}; }
+  return {...phases[0], phaseFrac};
+}
+
+/* ---- Rendered moon graphic (real terminator shape, not emoji) ---- */
+// Returns an SVG path 'd' string for the lit portion of a moon disc of given diameter,
+// for phaseFrac in [0,1) where 0 = new moon, 0.5 = full moon.
+function moonLitPathD(diameter, phaseFrac){
+  const r = diameter/2;
+  const theta = phaseFrac * 2 * Math.PI;
+  const rx = r * Math.abs(Math.cos(theta));
+  const top = `${r},0`;
+  const bottom = `${r},${diameter}`;
+  // Verified against exact illumination formula (1-cos(theta))/2 — max error 0.0005 across full range.
+  let sweep1, sweep2;
+  if(phaseFrac <= 0.25 || phaseFrac > 0.75){ sweep1 = 0; sweep2 = 1; }
+  else { sweep1 = 1; sweep2 = 1; }
+  return `M${top} A${rx},${r} 0 0,${sweep1} ${bottom} A${r},${r} 0 0,${sweep2} ${top} Z`;
+}
+
+function moonSVG(phaseFrac, size=80){
+  const r = size/2;
+  const d = moonLitPathD(size, phaseFrac);
+  const uid = 'mg' + Math.round(phaseFrac*10000);
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="display:block; filter:drop-shadow(0 0 14px rgba(77,239,227,0.25));">
+      <defs>
+        <radialGradient id="${uid}lit" cx="35%" cy="32%" r="75%">
+          <stop offset="0%" stop-color="#fffef2"/>
+          <stop offset="55%" stop-color="#f3ecc9"/>
+          <stop offset="100%" stop-color="#cdbf8a"/>
+        </radialGradient>
+      </defs>
+      <circle cx="${r}" cy="${r}" r="${r-1}" fill="#11142b" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+      <path d="${d}" fill="url(#${uid}lit)"/>
+    </svg>
+  `;
+}
+
+// Canvas equivalent — draws the same shape at (cx, cy) with given radius.
+function drawMoonPhase(ctx, cx, cy, radius, phaseFrac){
+  const d = radius*2;
+  ctx.save();
+  ctx.translate(cx-radius, cy-radius);
+  // dark disc base
+  ctx.beginPath();
+  ctx.arc(radius, radius, radius-0.5, 0, Math.PI*2);
+  ctx.fillStyle = '#11142b';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.lineWidth = 1.2;
+  ctx.stroke();
+  // lit portion
+  const grad = ctx.createRadialGradient(radius*0.65, radius*0.6, radius*0.1, radius, radius, radius);
+  grad.addColorStop(0, '#fffef2');
+  grad.addColorStop(0.55, '#f3ecc9');
+  grad.addColorStop(1, '#cdbf8a');
+  const path2d = new Path2D(moonLitPathD(d, phaseFrac));
+  ctx.fillStyle = grad;
+  ctx.fill(path2d);
+  ctx.restore();
+}
+
+function getZodiac(date){
+  const m = date.getMonth()+1, d = date.getDate();
+  const signs = [
+    {name:'Capricorn', from:[12,22], to:[1,19], icon:'♑'},
+    {name:'Aquarius', from:[1,20], to:[2,18], icon:'♒'},
+    {name:'Pisces', from:[2,19], to:[3,20], icon:'♓'},
+    {name:'Aries', from:[3,21], to:[4,19], icon:'♈'},
+    {name:'Taurus', from:[4,20], to:[5,20], icon:'♉'},
+    {name:'Gemini', from:[5,21], to:[6,20], icon:'♊'},
+    {name:'Cancer', from:[6,21], to:[7,22], icon:'♋'},
+    {name:'Leo', from:[7,23], to:[8,22], icon:'♌'},
+    {name:'Virgo', from:[8,23], to:[9,22], icon:'♍'},
+    {name:'Libra', from:[9,23], to:[10,22], icon:'♎'},
+    {name:'Scorpio', from:[10,23], to:[11,21], icon:'♏'},
+    {name:'Sagittarius', from:[11,22], to:[12,21], icon:'♐'},
+  ];
+  for(const s of signs){
+    const [fm,fd] = s.from, [tm,td] = s.to;
+    if(fm === tm){ if(m===fm && d>=fd && d<=td) return s; }
+    else {
+      if((m===fm && d>=fd) || (m===tm && d<=td)) return s;
+    }
+  }
+  return signs[0];
+}
+
+function getEra(year){
+  if(year < 1983) return {label:'Pre-Internet Era', desc:'A world of analog signals, landlines, and letters — the network had not yet been born.'};
+  if(year < 2000) return {label:'Internet Dawn', desc:'Dial-up modems were learning to sing, and the early web was just opening its eyes.'};
+  if(year < 2007) return {label:'Broadband & Web 2.0 Era', desc:'Always-on connections, the first social networks, and a faster, louder internet.'};
+  if(year < 2016) return {label:'Smartphone Revolution Era', desc:'The world moved into your pocket — apps, touchscreens, and constant connection.'};
+  if(year < 2023) return {label:'Streaming & Social Era', desc:"Algorithms began curating reality, and attention became the world's currency."};
+  return {label:'AI Era', desc:'Machines began to think alongside us, and the future started arriving early.'};
+}
+
+// Rough world population lookup (billions), interpolated linearly between points
+const POP_TABLE = [
+  [1950,2.536],[1955,2.773],[1960,3.034],[1965,3.339],[1970,3.700],
+  [1975,4.079],[1980,4.458],[1985,4.870],[1990,5.327],[1995,5.744],
+  [2000,6.143],[2005,6.542],[2010,6.957],[2015,7.380],[2020,7.795],
+  [2023,8.045],[2024,8.119],[2025,8.192],[2026,8.260],[2030,8.500]
+];
+function populationAtYear(year){
+  if(year <= POP_TABLE[0][0]) return POP_TABLE[0][1];
+  if(year >= POP_TABLE[POP_TABLE.length-1][0]) return POP_TABLE[POP_TABLE.length-1][1];
+  for(let i=0;i<POP_TABLE.length-1;i++){
+    const [y1,p1] = POP_TABLE[i], [y2,p2] = POP_TABLE[i+1];
+    if(year >= y1 && year <= y2){
+      const frac = (year-y1)/(y2-y1);
+      return p1 + (p2-p1)*frac;
+    }
+  }
+  return 8.0;
+}
+
+function babiesSameDay(year){
+  const popBillions = populationAtYear(year);
+  const popTotal = popBillions * 1e9;
+  const crudeBirthRate = 0.018; // ~18 per 1000 people/year, global rough average
+  const annualBirths = popTotal * crudeBirthRate;
+  return Math.round(annualBirths / 365);
+}
+
+const WEEKDAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+// Billboard Year-End Hot 100 #1 single by year (source: Billboard year-end charts, via Wikipedia)
+const SONG_OF_YEAR = {
+  1946:['Prisoner of Love','Perry Como'], 1947:['Near You','Francis Craig'],
+  1948:['Twelfth Street Rag','Pee Wee Hunt'], 1949:['Riders in the Sky','Vaughn Monroe'],
+  1950:['Goodnight, Irene','Gordon Jenkins & The Weavers'], 1951:['Too Young','Nat King Cole'],
+  1952:['Blue Tango','Leroy Anderson'], 1953:['Song from Moulin Rouge','Percy Faith'],
+  1954:['Little Things Mean a Lot','Kitty Kallen'], 1955:['Cherry Pink and Apple Blossom White','Pérez Prado'],
+  1956:['Heartbreak Hotel','Elvis Presley'], 1957:['All Shook Up','Elvis Presley'],
+  1958:['Nel Blu Dipinto Di Blu (Volare)','Domenico Modugno'], 1959:['The Battle of New Orleans','Johnny Horton'],
+  1960:['Theme from A Summer Place','Percy Faith'], 1961:["Tossin' and Turnin'",'Bobby Lewis'],
+  1962:['Stranger on the Shore','Mr. Acker Bilk'], 1963:['Sugar Shack','Jimmy Gilmer & The Fireballs'],
+  1964:['I Want to Hold Your Hand','The Beatles'], 1965:['Wooly Bully','Sam the Sham & the Pharaohs'],
+  1966:['The Ballad of the Green Berets','SSgt. Barry Sadler'], 1967:['To Sir with Love','Lulu'],
+  1968:['Hey Jude','The Beatles'], 1969:['Sugar, Sugar','The Archies'],
+  1970:['Bridge over Troubled Water','Simon & Garfunkel'], 1971:['Joy to the World','Three Dog Night'],
+  1972:['The First Time Ever I Saw Your Face','Roberta Flack'], 1973:["Tie a Yellow Ribbon Round the Ole Oak Tree",'Tony Orlando & Dawn'],
+  1974:['The Way We Were','Barbra Streisand'], 1975:['Love Will Keep Us Together','Captain & Tennille'],
+  1976:['Silly Love Songs','Wings'], 1977:["Tonight's the Night (Gonna Be Alright)",'Rod Stewart'],
+  1978:['Shadow Dancing','Andy Gibb'], 1979:['My Sharona','The Knack'],
+  1980:['Call Me','Blondie'], 1981:['Bette Davis Eyes','Kim Carnes'],
+  1982:['Physical','Olivia Newton-John'], 1983:['Every Breath You Take','The Police'],
+  1984:['When Doves Cry','Prince'], 1985:['Careless Whisper','Wham! ft. George Michael'],
+  1986:["That's What Friends Are For",'Dionne & Friends'], 1987:['Walk Like an Egyptian','The Bangles'],
+  1988:['Faith','George Michael'], 1989:['Look Away','Chicago'],
+  1990:['Hold On','Wilson Phillips'], 1991:['(Everything I Do) I Do It for You','Bryan Adams'],
+  1992:['End of the Road','Boyz II Men'], 1993:['I Will Always Love You','Whitney Houston'],
+  1994:['The Sign','Ace of Base'], 1995:["Gangsta's Paradise",'Coolio ft. L.V.'],
+  1996:['Macarena (Bayside Boys Mix)','Los del Río'], 1997:['Candle in the Wind 1997','Elton John'],
+  1998:['Too Close','Next'], 1999:['Believe','Cher'],
+  2000:['Breathe','Faith Hill'], 2001:['Hanging by a Moment','Lifehouse'],
+  2002:['How You Remind Me','Nickelback'], 2003:['In Da Club','50 Cent'],
+  2004:['Yeah!','Usher ft. Lil Jon & Ludacris'], 2005:['We Belong Together','Mariah Carey'],
+  2006:['Bad Day','Daniel Powter'], 2007:['Irreplaceable','Beyoncé'],
+  2008:['Low','Flo Rida ft. T-Pain'], 2009:['Boom Boom Pow','The Black Eyed Peas'],
+  2010:['Tik Tok','Kesha'], 2011:['Rolling in the Deep','Adele'],
+  2012:['Somebody That I Used to Know','Gotye ft. Kimbra'], 2013:['Thrift Shop','Macklemore & Ryan Lewis ft. Wanz'],
+  2014:['Happy','Pharrell Williams'], 2015:['Uptown Funk','Mark Ronson ft. Bruno Mars'],
+  2016:['Love Yourself','Justin Bieber'], 2017:['Shape of You','Ed Sheeran'],
+  2018:["God's Plan",'Drake'], 2019:['Old Town Road','Lil Nas X ft. Billy Ray Cyrus'],
+  2020:['Blinding Lights','The Weeknd'], 2021:['Levitating','Dua Lipa'],
+  2022:['Heat Waves','Glass Animals'], 2023:['Last Night','Morgan Wallen'],
+  2024:['Lose Control','Teddy Swims'], 2025:['Die with a Smile','Lady Gaga & Bruno Mars'],
+};
+function songOfYear(year){
+  if(SONG_OF_YEAR[year]) return {song: SONG_OF_YEAR[year][0], artist: SONG_OF_YEAR[year][1], known:true};
+  return {song:null, artist:null, known:false};
+}
+
+/* ============== STATE ============== */
+let birthDate = null;
+let hasTime = false;
+let liveTimer = null;
+let countdownTimer = null;
+let currentData = null;
+
+/* ============== AGE CALC ============== */
+function computeAgeBreakdown(birth, now){
+  let years = now.getFullYear() - birth.getFullYear();
+  let months = now.getMonth() - birth.getMonth();
+  let days = now.getDate() - birth.getDate();
+  if(days < 0){
+    months -= 1;
+    const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+    days += prevMonth.getDate();
+  }
+  if(months < 0){ months += 12; years -= 1; }
+  const totalMs = now - birth;
+  const totalSeconds = Math.floor(totalMs/1000);
+  const totalMinutes = Math.floor(totalSeconds/60);
+  const totalHours = Math.floor(totalMinutes/60);
+  const totalDays = Math.floor(totalHours/24);
+  return {years, months, days, totalDays, totalHours, totalMinutes, totalSeconds};
+}
+
+function nextBirthdayCountdown(birth, now){
+  let next = new Date(now.getFullYear(), birth.getMonth(), birth.getDate());
+  if(next < now) next = new Date(now.getFullYear()+1, birth.getMonth(), birth.getDate());
+  const diff = next - now;
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor((diff%86400000)/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  return {d,h,m,s};
+}
+
+/* ============== RENDER TELEMETRY ============== */
+function renderTelemetry(){
+  const now = new Date();
+  const age = computeAgeBreakdown(birthDate, now);
+  const grid = document.getElementById('telemetryGrid');
+  grid.innerHTML = `
+    <div class="tcell"><div class="val cyan">${age.years}</div><div class="lbl">Years</div></div>
+    <div class="tcell"><div class="val cyan">${age.months}</div><div class="lbl">Months</div></div>
+    <div class="tcell"><div class="val cyan">${age.days}</div><div class="lbl">Days</div></div>
+    <div class="tcell"><div class="val">${age.totalDays.toLocaleString()}</div><div class="lbl">Total Days</div></div>
+    <div class="tcell"><div class="val">${age.totalHours.toLocaleString()}</div><div class="lbl">Total Hours</div></div>
+    <div class="tcell"><div class="val">${age.totalMinutes.toLocaleString()}</div><div class="lbl">Total Minutes</div></div>
+  `;
+}
+
+function startLiveTickers(){
+  function tick(){
+    const now = new Date();
+    const age = computeAgeBreakdown(birthDate, now);
+    document.getElementById('liveSeconds').textContent = age.totalSeconds.toLocaleString();
+
+    const cd = nextBirthdayCountdown(birthDate, now);
+    document.getElementById('countdownRow').innerHTML = `
+      <div class="cbox"><div class="n">${cd.d}</div><div class="l">Days</div></div>
+      <div class="cbox"><div class="n">${pad(cd.h)}</div><div class="l">Hrs</div></div>
+      <div class="cbox"><div class="n">${pad(cd.m)}</div><div class="l">Min</div></div>
+      <div class="cbox"><div class="n">${pad(cd.s)}</div><div class="l">Sec</div></div>
+    `;
+    renderOrbitReadout();
+  }
+  tick();
+  liveTimer = setInterval(tick, 1000);
+}
+
+/* ============== RENDER WORLD SNAPSHOT ============== */
+function renderWorldSnapshot(){
+  const year = birthDate.getFullYear();
+  const weekday = WEEKDAYS[birthDate.getDay()];
+  const moon = getMoonPhase(birthDate);
+  const zodiac = getZodiac(birthDate);
+  const pop = populationAtYear(year);
+  const era = getEra(year);
+
+  const snap = document.getElementById('snapGrid');
+  snap.innerHTML = `
+    <div class="snap-item"><div class="snap-icon">📅</div><div><h4>Day of the week</h4><div class="v">${weekday}</div></div></div>
+    <div class="snap-item moon-snap-item"><div class="moon-visual">${moonSVG(moon.phaseFrac, 56)}</div><div><h4>Moon phase</h4><div class="v">${moon.name}</div></div></div>
+    <div class="snap-item"><div class="snap-icon">${zodiac.icon}</div><div><h4>Solar sign</h4><div class="v">${zodiac.name}</div></div></div>
+    <div class="snap-item"><div class="snap-icon">🌍</div><div><h4>World population</h4><div class="v">~${pop.toFixed(2)}B people</div></div></div>
+  `;
+  document.getElementById('eraBadgeWrap').innerHTML = `<div class="era-badge">⟡ ${era.label}</div><div style="margin-top:10px; font-size:13px; color:var(--ink-dim); line-height:1.6;">${era.desc}</div>`;
+  return {year, weekday, moon, zodiac, pop, era};
+}
+
+/* ============== HISTORICAL EVENTS + FAMOUS BIRTHS (live fetch, multi-source fallback) ============== */
+async function fetchOnThisDay(month, day){
+  // Try a chain of sources, since CORS / network availability varies by environment.
+  const mm = pad(month), dd = pad(day);
+
+  // Source 1: Wikipedia REST API, direct
+  try{
+    const [eRes, bRes] = await Promise.all([
+      fetch(`https://en.wikipedia.org/api/rest_v1/feed/onthisday/events/${mm}/${dd}`),
+      fetch(`https://en.wikipedia.org/api/rest_v1/feed/onthisday/births/${mm}/${dd}`)
+    ]);
+    if(eRes.ok && bRes.ok){
+      const eJson = await eRes.json();
+      const bJson = await bRes.json();
+      const events = (eJson.events || []).map(e => ({year: e.year, text: (e.text||'').replace(/<[^>]+>/g,'')}));
+      const births = (bJson.births || []).map(b => ({year: b.year, text: (b.text||'').replace(/<[^>]+>/g,'')}));
+      if(events.length || births.length) return {events, births, source:'wikipedia'};
+    }
+  }catch(e){ /* try next source */ }
+
+  // Source 2: Wikipedia REST API via a CORS proxy (covers sandboxes that block direct cross-origin fetch)
+  try{
+    const wikiEventsUrl = encodeURIComponent(`https://en.wikipedia.org/api/rest_v1/feed/onthisday/events/${mm}/${dd}`);
+    const wikiBirthsUrl = encodeURIComponent(`https://en.wikipedia.org/api/rest_v1/feed/onthisday/births/${mm}/${dd}`);
+    const [eRes, bRes] = await Promise.all([
+      fetch(`https://api.allorigins.win/raw?url=${wikiEventsUrl}`),
+      fetch(`https://api.allorigins.win/raw?url=${wikiBirthsUrl}`)
+    ]);
+    if(eRes.ok && bRes.ok){
+      const eJson = await eRes.json();
+      const bJson = await bRes.json();
+      const events = (eJson.events || []).map(e => ({year: e.year, text: (e.text||'').replace(/<[^>]+>/g,'')}));
+      const births = (bJson.births || []).map(b => ({year: b.year, text: (b.text||'').replace(/<[^>]+>/g,'')}));
+      if(events.length || births.length) return {events, births, source:'wikipedia-proxy'};
+    }
+  }catch(e){ /* try next source */ }
+
+  // Source 3: muffinlabs (independent service, parses Wikipedia "on this day" pages)
+  try{
+    const res = await fetch(`https://history.muffinlabs.com/date/${month}/${day}`);
+    if(res.ok){
+      const json = await res.json();
+      const events = (json.data?.Events || []).map(e => ({year: parseInt(e.year,10) || e.year, text: e.text}));
+      const births = (json.data?.Births || []).map(b => ({year: parseInt(b.year,10) || b.year, text: b.text}));
+      if(events.length || births.length) return {events, births, source:'muffinlabs'};
+    }
+  }catch(e){ /* exhausted */ }
+
+  return null;
+}
+
+async function renderHistoricalEvents(date){
+  const list = document.getElementById('eventsList');
+  const status = document.getElementById('eventsStatus');
+  const famousList = document.getElementById('famousList');
+  const famousStatus = document.getElementById('famousStatus');
+  list.innerHTML = '';
+  famousList.innerHTML = '';
+  status.textContent = 'Contacting historical archive…';
+  famousStatus.textContent = 'Scanning the archive for fellow birthdays…';
+
+  const result = await fetchOnThisDay(date.getMonth()+1, date.getDate());
+
+  if(!result){
+    list.innerHTML = `
+      <div class="event-row"><div class="yr mono">—</div><div class="tx">The historical archive is unreachable from this environment right now, but know this: the day you were born, somewhere on Earth, history was quietly being made — newspapers were printed, songs were released, and the world kept spinning exactly as it always had.</div></div>
+    `;
+    status.textContent = 'Live archive unreachable — showing a fallback note instead.';
+    famousList.innerHTML = `
+      <div class="event-row"><div class="yr mono">—</div><div class="tx">Couldn't reach the archive to find your birthday twins this time — but somewhere, on every one of the 365 days in the calendar, someone notable shares yours.</div></div>
+    `;
+    famousStatus.textContent = 'Live archive unreachable — showing a fallback note instead.';
+    return;
+  }
+
+  const events = result.events.filter(e => e.year < date.getFullYear()).slice(-5).reverse();
+  if(events.length){
+    list.innerHTML = events.map(e => `
+      <div class="event-row"><div class="yr mono">${e.year}</div><div class="tx">${e.text}</div></div>
+    `).join('');
+    status.textContent = `Live data from Wikipedia's historical archive.`;
+  } else {
+    list.innerHTML = `<div class="event-row"><div class="yr mono">—</div><div class="tx">No notable events were returned for this exact date — try a search engine for "this day in history" on your birth date for more.</div></div>`;
+    status.textContent = 'No events found for this date.';
+  }
+
+  const births = result.births
+    .filter(b => b.year !== date.getFullYear())
+    .sort((a,b) => b.year - a.year)
+    .slice(0, 6);
+  if(births.length){
+    famousList.innerHTML = births.map(b => `
+      <div class="event-row"><div class="yr mono">${b.year}</div><div class="tx">${b.text}</div></div>
+    `).join('');
+    famousStatus.textContent = `Live data from Wikipedia's historical archive.`;
+  } else {
+    famousList.innerHTML = `<div class="event-row"><div class="yr mono">—</div><div class="tx">No notable birthdays were returned for this exact date.</div></div>`;
+    famousStatus.textContent = 'No matches found for this date.';
+  }
+}
+
+/* ============== MUSIC SNAPSHOT ============== */
+function renderMusicPanel(year){
+  const container = document.getElementById('musicContent');
+  const data = songOfYear(year);
+  if(data.known){
+    const query = encodeURIComponent(`${data.song} ${data.artist}`);
+    container.innerHTML = `
+      <div class="music-card">
+        <div class="music-disc"></div>
+        <div class="music-info">
+          <div class="yr">Billboard Year-End #1 Single, ${year}</div>
+          <div class="song">"${data.song}"</div>
+          <div class="artist">${data.artist}</div>
+          <a class="music-link" href="https://www.youtube.com/results?search_query=${query}" target="_blank" rel="noopener">▶ Listen on YouTube</a>
+        </div>
+      </div>
+      <div class="music-note">Sourced from Billboard's official Year-End Hot 100 chart — the single song that defined radio, sales, and airplay across your full birth year, not just the day itself.</div>
+    `;
+  } else {
+    container.innerHTML = `
+      <div class="music-card">
+        <div class="music-disc"></div>
+        <div class="music-info">
+          <div class="yr">Year-End Chart</div>
+          <div class="song">Not yet finalized</div>
+          <div class="artist">Billboard publishes year-end charts in late December — this year's chart-topper isn't official yet.</div>
+        </div>
+      </div>
+    `;
+  }
+}
+
+/* ============== YEAR-CONTEXT PANELS (Wikipedia summary API — real, live, no key) ============== */
+async function renderYearSummaryPanel(elementId, yearPageTitle, year, emptyLabel){
+  const el = document.getElementById(elementId);
+  const result = await fetchWikiSummary(yearPageTitle);
+  if(result){
+    el.innerHTML = `
+      <div>${result.extract}</div>
+      <span class="src">Source: Wikipedia — <a href="${result.pageUrl}" target="_blank" rel="noopener">${result.title}</a></span>
+    `;
+  } else {
+    el.innerHTML = `<div class="fallback-note">Couldn't retrieve a live summary for ${year} right now — ${emptyLabel} Try again in a moment, or visit Wikipedia's "${yearPageTitle}" page directly.</div>`;
+  }
+}
+
+function renderMoviesPanel(year){ renderYearSummaryPanel('moviesContent', `${year}_in_film`, year, 'this data is fetched live from Wikipedia and requires a working connection.'); }
+function renderTVPanel(year){ renderYearSummaryPanel('tvContent', `${year}_in_American_television`, year, 'this data is fetched live from Wikipedia and requires a working connection.'); }
+function renderGamesPanel(year){ renderYearSummaryPanel('gamesContent', `${year}_in_video_games`, year, 'this data is fetched live from Wikipedia and requires a working connection.'); }
+function renderSportsPanel(year){ renderYearSummaryPanel('sportsContent', `${year}_in_sports`, year, 'this data is fetched live from Wikipedia and requires a working connection.'); }
+
+/* ============== TECHNOLOGY OF YOUR ERA ============== */
+function renderTechPanel(ctxData){
+  const el = document.getElementById('techContent');
+  el.innerHTML = `
+    <div class="era-badge">⟡ ${ctxData.era.label}</div>
+    <div style="margin-top:12px; font-size:14px; color:var(--ink-dim); line-height:1.7;">${ctxData.era.desc}</div>
+    <div class="fallback-note" style="margin-top:14px;">Era boundaries are a curated technology timeline (broad decade-level classification), not a per-year live feed.</div>
+  `;
+}
+
+/* ============== ECONOMY SNAPSHOT (Frankfurter / ECB — real, live, no key, from 1999-01-04) ============== */
+async function renderEconomyPanel(date){
+  const el = document.getElementById('economyContent');
+  const FIRST_AVAILABLE = new Date(1999, 0, 4);
+  if(date < FIRST_AVAILABLE){
+    el.innerHTML = `<div class="fallback-note">The ECB reference-rate archive (via Frankfurter) only goes back to January 4, 1999 — earlier exchange rates aren't available from this free source.</div>`;
+    return;
+  }
+  const dateStr = date.toISOString().split('T')[0];
+  const json = await fetchJSON(`https://api.frankfurter.app/${dateStr}?from=USD&to=EUR,GBP,JPY,NPR`);
+  if(json && json.rates){
+    const rates = json.rates;
+    const actualDate = json.date;
+    const pairs = [
+      ['EUR', rates.EUR], ['GBP', rates.GBP], ['JPY', rates.JPY], ['NPR', rates.NPR]
+    ].filter(([,v]) => v !== undefined);
+    el.innerHTML = `
+      <div style="font-size:12.5px; color:var(--ink-faint); margin-bottom:10px;">1 USD on ${actualDate}${actualDate !== dateStr ? ' (nearest business day)' : ''}, per European Central Bank reference rates:</div>
+      <div class="fx-grid">
+        ${pairs.map(([code,val]) => `<div class="fx-cell"><div class="pair">USD → ${code}</div><div class="rate">${val.toFixed(code==='JPY'||code==='NPR'?2:4)}</div></div>`).join('')}
+      </div>
+      <span class="src">Source: Frankfurter API, live ECB reference rates.</span>
+    `;
+  } else {
+    el.innerHTML = `<div class="fallback-note">Couldn't reach the exchange-rate archive right now. This uses the free Frankfurter/ECB API and needs a live connection.</div>`;
+  }
+}
+
+/* ============== SPACE SNAPSHOT (NASA APOD — real API, DEMO_KEY, graceful fallback) ============== */
+async function renderSpacePanel(ctxData){
+  const el = document.getElementById('spaceContent');
+  const APOD_START = new Date(1995, 5, 16); // June 16, 1995
+  let apodBlock = '';
+  if(birthDate >= APOD_START){
+    const dateStr = birthDate.toISOString().split('T')[0];
+    // Prefer the bundled backend proxy (server.js) — it holds your real NASA key server-side.
+    // If this page is opened directly as a file (no server running), that request fails fast
+    // and we fall back to NASA's public, keyless DEMO_KEY so the app still works standalone.
+    let json = await fetchJSON(`/api/apod?date=${dateStr}`, 4000);
+    if(!json){
+      json = await fetchJSON(`https://api.nasa.gov/planetary/apod?date=${dateStr}&api_key=${API_KEYS.NASA}`);
+    }
+    if(json && json.url && json.media_type === 'image'){
+      apodBlock = `
+        <div style="margin-top:16px;">
+          <img src="${json.url}" alt="NASA Astronomy Picture of the Day" style="width:100%; border-radius:12px; display:block;" />
+          <div style="margin-top:8px; font-size:13px; color:var(--ink); font-weight:600;">${json.title || ''}</div>
+          <span class="src">NASA Astronomy Picture of the Day — the actual picture published on your birth date.</span>
+        </div>
+      `;
+    } else if(json && json.url){
+      apodBlock = `<div class="fallback-note" style="margin-top:14px;">That day's Astronomy Picture of the Day was a video, not an image — <a href="${json.url}" target="_blank" rel="noopener" style="color:var(--cyan);">view it here</a>.</div>`;
+    } else {
+      apodBlock = `<div class="fallback-note" style="margin-top:14px;">NASA's public demo API is rate-limited and shared by everyone using this app — it may be temporarily unavailable. <a href="https://apod.nasa.gov/apod/archivepix.html" target="_blank" rel="noopener" style="color:var(--cyan);">Browse the APOD archive directly</a> instead.</div>`;
+    }
+  } else {
+    apodBlock = `<div class="fallback-note" style="margin-top:14px;">NASA's Astronomy Picture of the Day archive only starts June 16, 1995 — your birth date predates it.</div>`;
+  }
+  el.innerHTML = `
+    <div class="snap-grid">
+      <div class="snap-item moon-snap-item"><div class="moon-visual">${moonSVG(ctxData.moon.phaseFrac, 48)}</div><div><h4>Moon phase</h4><div class="v">${ctxData.moon.name}</div></div></div>
+      <div class="snap-item"><div class="snap-icon">${ctxData.zodiac.icon}</div><div><h4>Sun sign</h4><div class="v">${ctxData.zodiac.name}</div></div></div>
+    </div>
+    ${apodBlock}
+  `;
+}
+
+/* ============== WEATHER AT BIRTH (Open-Meteo Geocoding + Archive — real, live, no key) ============== */
+async function geocodePlace(name){
+  const json = await fetchJSON(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(name)}&count=1&language=en&format=json`);
+  if(json && json.results && json.results.length){
+    const r = json.results[0];
+    return {lat: r.latitude, lon: r.longitude, label: [r.name, r.admin1, r.country].filter(Boolean).join(', ')};
+  }
+  return null;
+}
+
+async function renderWeatherPanel(date, placeName){
+  const el = document.getElementById('weatherContent');
+  if(!placeName){
+    el.innerHTML = `<div class="fallback-note">Enter a place of birth above to look up historical weather.</div>`;
+    return null;
+  }
+  el.innerHTML = `<div class="fallback-note">Looking up ${placeName}…</div>`;
+  const geo = await geocodePlace(placeName);
+  if(!geo){
+    el.innerHTML = `<div class="fallback-note">Couldn't locate "${placeName}" — try a more specific place name (e.g. "Paris, France" instead of just a neighborhood).</div>`;
+    return null;
+  }
+  const EARLIEST = new Date(1940, 0, 1);
+  if(date < EARLIEST){
+    el.innerHTML = `<div class="fallback-note">Found ${geo.label}, but the weather reanalysis archive only extends back to 1940.</div>`;
+    return geo;
+  }
+  const dateStr = date.toISOString().split('T')[0];
+  const json = await fetchJSON(`https://archive-api.open-meteo.com/v1/archive?latitude=${geo.lat}&longitude=${geo.lon}&start_date=${dateStr}&end_date=${dateStr}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&timezone=auto`);
+  if(json && json.daily && json.daily.time && json.daily.time.length){
+    const d = json.daily;
+    const tmax = d.temperature_2m_max[0], tmin = d.temperature_2m_min[0], precip = d.precipitation_sum[0];
+    const code = d.weathercode ? d.weathercode[0] : null;
+    const icon = weatherCodeIcon(code);
+    el.innerHTML = `
+      <div class="weather-card">
+        <div class="weather-icon">${icon}</div>
+        <div class="weather-stats">
+          <div class="weather-stat"><div class="v">${tmax != null ? tmax.toFixed(1)+'°C' : '—'}</div><div class="l">High</div></div>
+          <div class="weather-stat"><div class="v">${tmin != null ? tmin.toFixed(1)+'°C' : '—'}</div><div class="l">Low</div></div>
+          <div class="weather-stat"><div class="v">${precip != null ? precip.toFixed(1)+'mm' : '—'}</div><div class="l">Precipitation</div></div>
+        </div>
+      </div>
+      <span class="src">${geo.label} · Source: Open-Meteo Historical Weather API (ERA5 reanalysis).</span>
+    `;
+    return geo;
+  } else {
+    el.innerHTML = `<div class="fallback-note">Found ${geo.label}, but the weather archive didn't return data for that exact date.</div>`;
+    return geo;
+  }
+}
+
+function weatherCodeIcon(code){
+  if(code == null) return '🌡️';
+  if(code === 0) return '☀️';
+  if([1,2,3].includes(code)) return '⛅';
+  if([45,48].includes(code)) return '🌫️';
+  if([51,53,55,56,57].includes(code)) return '🌦️';
+  if([61,63,65,66,67,80,81,82].includes(code)) return '🌧️';
+  if([71,73,75,77,85,86].includes(code)) return '❄️';
+  if([95,96,99].includes(code)) return '⛈️';
+  return '🌡️';
+}
+
+/* ============== WORLD MAP (OpenStreetMap embed — real, no key) ============== */
+function renderMapPanel(geo){
+  const el = document.getElementById('mapContent');
+  if(!geo){
+    el.innerHTML = `<div class="fallback-note">Enter a place of birth above to see it on the map.</div>`;
+    return;
+  }
+  const d = 0.15;
+  const bbox = `${geo.lon-d},${geo.lat-d},${geo.lon+d},${geo.lat+d}`;
+  el.innerHTML = `
+    <div class="map-embed">
+      <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&marker=${geo.lat},${geo.lon}&layer=mapnik" loading="lazy"></iframe>
+    </div>
+    <span class="src">${geo.label} · Map data © OpenStreetMap contributors.</span>
+  `;
+}
+
+/* ============== SKY MAP (illustrative — moon + zodiac wheel, not a precise ephemeris) ============== */
+function renderSkyMap(ctxData){
+  const wrap = document.getElementById('skymapWrap');
+  const size = 280;
+  const cx = size/2, cy = size/2, r = size/2 - 30;
+  const zodiacOrder = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+  const zodiacIcons = {Aries:'♈',Taurus:'♉',Gemini:'♊',Cancer:'♋',Leo:'♌',Virgo:'♍',Libra:'♎',Scorpio:'♏',Sagittarius:'♐',Capricorn:'♑',Aquarius:'♒',Pisces:'♓'};
+  const activeIdx = zodiacOrder.indexOf(ctxData.zodiac.name);
+  let ticks = '';
+  for(let i=0;i<12;i++){
+    const angle = (i/12) * 2*Math.PI - Math.PI/2;
+    const x1 = cx + Math.cos(angle)*(r-8), y1 = cy + Math.sin(angle)*(r-8);
+    const x2 = cx + Math.cos(angle)*r, y2 = cy + Math.sin(angle)*r;
+    const lx = cx + Math.cos(angle)*(r+18), ly = cy + Math.sin(angle)*(r+18);
+    const isActive = i === activeIdx;
+    ticks += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${isActive?'#4defe3':'rgba(255,255,255,0.2)'}" stroke-width="${isActive?2.5:1}"/>`;
+    ticks += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-size="${isActive?16:12}" fill="${isActive?'#4defe3':'rgba(255,255,255,0.4)'}">${zodiacIcons[zodiacOrder[i]]}</text>`;
+  }
+  let stars = '';
+  for(let i=0;i<40;i++){
+    const a = Math.random()*2*Math.PI, rr = Math.random()*(r-30);
+    const sx = cx + Math.cos(a)*rr, sy = cy + Math.sin(a)*rr;
+    stars += `<circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="${(Math.random()*1.1+0.3).toFixed(1)}" fill="rgba(255,255,255,${(Math.random()*0.6+0.2).toFixed(2)})"/>`;
+  }
+  const moonD = moonLitPathD(34, ctxData.moon.phaseFrac);
+  wrap.innerHTML = `
+    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+      <circle cx="${cx}" cy="${cy}" r="${r-40}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+      ${stars}
+      ${ticks}
+      <g transform="translate(${cx-17}, ${cy-17})">
+        <circle cx="17" cy="17" r="17" fill="#11142b" stroke="rgba(255,255,255,0.15)"/>
+        <path d="${moonD}" fill="#f3ecc9"/>
+      </g>
+    </svg>
+  `;
+}
+
+/* ============== INTERACTIVE CONSTELLATION MAP (illustrative star patterns, real star names) ============== */
+const CONSTELLATIONS = {
+  Aries:      {stars:[[30,70],[70,50],[115,55],[160,40]], lines:[[0,1],[1,2],[2,3]], names:['Hamal','Sheratan','Mesarthim','Botein']},
+  Taurus:     {stars:[[25,90],[70,60],[110,40],[150,55],[185,75]], lines:[[0,1],[1,2],[2,3],[3,4]], names:['Aldebaran','Elnath','Zeta Tauri','Alcyone','Tianguan']},
+  Gemini:     {stars:[[30,40],[35,90],[70,120],[150,110],[180,80],[175,30]], lines:[[0,1],[1,2],[2,3],[3,4],[4,5]], names:['Castor','Alhena','Wasat','Mekbuda','Mebsuta','Pollux']},
+  Cancer:     {stars:[[40,50],[90,40],[130,70],[100,110]], lines:[[0,1],[1,2],[2,3]], names:['Al Tarf','Asellus Australis','Acubens','Asellus Borealis']},
+  Leo:        {stars:[[25,60],[55,35],[95,30],[130,45],[160,80],[190,70],[150,110]], lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[3,6]], names:['Algieba','Adhafera','Rasalas','Regulus','Zosma','Chertan','Denebola']},
+  Virgo:      {stars:[[30,50],[70,80],[110,60],[150,90],[190,60]], lines:[[0,1],[1,2],[2,3],[3,4]], names:['Vindemiatrix','Porrima','Auva','Heze','Spica']},
+  Libra:      {stars:[[45,90],[95,45],[145,90],[170,60]], lines:[[0,1],[1,2],[1,3]], names:['Zubenelgenubi','Zubeneschamali','Brachium','Zubenelhakrabi']},
+  Scorpio:    {stars:[[25,35],[55,55],[85,50],[110,75],[135,105],[155,130],[175,140],[195,130]], lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7]], names:['Dschubba','Acrab','Antares','Alniyat','Sargas','Shaula','Lesath','Denebakrab']},
+  Sagittarius:{stars:[[30,100],[70,60],[115,45],[150,65],[185,95],[140,110]], lines:[[0,1],[1,2],[2,3],[3,4],[3,5]], names:['Kaus Media','Kaus Australis','Alnasl','Nunki','Ascella','Kaus Borealis']},
+  Capricorn:  {stars:[[30,50],[80,90],[140,95],[190,45]], lines:[[0,1],[1,2],[2,3]], names:['Algedi','Dabih','Nashira','Deneb Algedi']},
+  Aquarius:   {stars:[[25,50],[65,80],[110,60],[150,85],[185,55]], lines:[[0,1],[1,2],[2,3],[3,4]], names:['Sadalmelik','Sadachbia','Sadalsuud','Skat','Albali']},
+  Pisces:     {stars:[[20,40],[60,70],[100,100],[140,90],[180,60],[150,40]], lines:[[0,1],[1,2],[2,3],[3,4],[4,5]], names:['Alrescha','Fumalsamakah','Eta Piscium','Omega Piscium','Iota Piscium','Gamma Piscium']},
+};
+
+function renderConstellationMap(ctxData){
+  const wrap = document.getElementById('constWrap');
+  const cap = document.getElementById('constCaption');
+  if(!wrap) return;
+  const name = ctxData.zodiac.name;
+  const data = CONSTELLATIONS[name];
+  if(!data){ wrap.innerHTML = ''; return; }
+  const W = 220, H = 160;
+  let bgStars = '';
+  for(let i=0;i<30;i++){
+    const x = Math.random()*W, y = Math.random()*H, r = Math.random()*0.9+0.2;
+    bgStars += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" fill="rgba(255,255,255,${(Math.random()*0.4+0.1).toFixed(2)})"/>`;
+  }
+  const lines = data.lines.map(([a,b]) => {
+    const [x1,y1] = data.stars[a], [x2,y2] = data.stars[b];
+    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="rgba(77,239,227,0.45)" stroke-width="1.3"/>`;
+  }).join('');
+  const starDots = data.stars.map(([x,y],i) => `
+    <circle class="const-star" data-name="${data.names[i]}" cx="${x}" cy="${y}" r="2.6" fill="#eaf0ff" style="filter:drop-shadow(0 0 4px rgba(255,255,255,0.7));"/>
+  `).join('');
+  wrap.innerHTML = `
+    <svg id="constSvg" width="100%" viewBox="0 0 ${W} ${H}" style="max-width:420px; display:block; margin:0 auto;">
+      ${bgStars}
+      ${lines}
+      ${starDots}
+    </svg>
+    <div class="const-tip" id="constTip"></div>
+  `;
+  cap.textContent = `Your solar-sign constellation, ${name} — tap or hover the stars for their names.`;
+
+  const svg = document.getElementById('constSvg');
+  const tip = document.getElementById('constTip');
+  svg.querySelectorAll('.const-star').forEach(star => {
+    const show = (e) => {
+      const rect = wrap.getBoundingClientRect();
+      const starRect = star.getBoundingClientRect();
+      tip.textContent = star.dataset.name;
+      tip.style.left = (starRect.left - rect.left + starRect.width/2) + 'px';
+      tip.style.top = (starRect.top - rect.top) + 'px';
+      tip.classList.add('show');
+    };
+    star.addEventListener('mouseenter', show);
+    star.addEventListener('touchstart', (e) => { show(e); }, {passive:true});
+    star.addEventListener('mouseleave', () => tip.classList.remove('show'));
+  });
+}
+
+/* ============== LIFE STATISTICS (pure calculation, average physiological rates) ============== */
+function renderLifeStats(){
+  const now = new Date();
+  const totalMinutes = Math.floor((now - birthDate)/60000);
+  const totalDaysF = (now - birthDate)/86400000;
+  const heartbeats = Math.round(totalMinutes * 75);       // ~75 bpm average resting heart rate
+  const breaths = Math.round(totalMinutes * 16);          // ~16 breaths/min average
+  const sleepHours = Math.round((totalMinutes/60) * (1/3)); // ~1/3 of life asleep
+  const blinks = Math.round((totalMinutes) * 15);          // ~15 blinks/min average waking rate (rough overall estimate)
+  const steps = Math.round(totalDaysF * 5000);             // ~5,000 steps/day average across a lifetime (rough, includes infancy)
+  const grid = document.getElementById('lifeStatsGrid');
+  grid.innerHTML = `
+    <div class="life-cell"><div class="icon">💓</div><div class="v">${heartbeats.toLocaleString()}</div><div class="l">Heartbeats</div></div>
+    <div class="life-cell"><div class="icon">🫁</div><div class="v">${breaths.toLocaleString()}</div><div class="l">Breaths</div></div>
+    <div class="life-cell"><div class="icon">😴</div><div class="v">${sleepHours.toLocaleString()}</div><div class="l">Hours asleep</div></div>
+    <div class="life-cell"><div class="icon">👁️</div><div class="v">${blinks.toLocaleString()}</div><div class="l">Blinks</div></div>
+    <div class="life-cell"><div class="icon">👟</div><div class="v">${steps.toLocaleString()}</div><div class="l">Steps (estimated)</div></div>
+  `;
+}
+
+/* ============== COSMIC / ORBITAL STATISTICS ============== */
+function calcCosmicStats(){
+  const now = new Date();
+  const totalSeconds = (now - birthDate)/1000;
+  const totalDays = totalSeconds/86400;
+  const years = totalDays/365.2425;
+
+  const EARTH_ORBIT_SPEED_KMS = 29.78;                 // Earth's average orbital speed around the Sun
+  const SOLAR_SYSTEM_SPEED_KMS = 230;                  // Sun's orbital speed around the Milky Way core
+  const GALACTIC_ROTATION_PERIOD_YEARS = 225_000_000;  // one full 360° galactic year
+  const SYNODIC_MONTH_DAYS = 29.530588853;
+  const ECLIPSES_PER_YEAR = 4.2;                       // average total solar+lunar eclipses/year, globally
+
+  const earthKm = totalSeconds * EARTH_ORBIT_SPEED_KMS;                 // km traveled around the Sun
+  const galaxyKm = totalSeconds * SOLAR_SYSTEM_SPEED_KMS;               // km traveled through the Milky Way
+  const galaxyDegrees = (years / GALACTIC_ROTATION_PERIOD_YEARS) * 360; // degrees of galactic rotation
+  const fullMoons = totalDays / SYNODIC_MONTH_DAYS;
+  const eclipses = years * ECLIPSES_PER_YEAR;
+  const orbits = years;
+
+  return {earthKm, galaxyKm, galaxyDegrees, fullMoons, eclipses, orbits};
+}
+
+function renderOrbitReadout(){
+  const s = calcCosmicStats();
+  const grid = document.getElementById('orbitReadout');
+  if(!grid) return;
+  grid.innerHTML = `
+    <div class="tcell"><div class="val cyan">${(s.earthKm/1e9).toFixed(3)}B</div><div class="lbl">km around the Sun</div></div>
+    <div class="tcell"><div class="val cyan">${(s.galaxyKm/1e6).toFixed(1)}M</div><div class="lbl">km through the Milky Way</div></div>
+    <div class="tcell"><div class="val">${s.galaxyDegrees.toFixed(6)}°</div><div class="lbl">Milky Way rotated</div></div>
+    <div class="tcell"><div class="val">${s.orbits.toFixed(2)}</div><div class="lbl">Orbits around the Sun</div></div>
+    <div class="tcell"><div class="val">${Math.floor(s.fullMoons).toLocaleString()}</div><div class="lbl">Full moons passed</div></div>
+    <div class="tcell"><div class="val">${Math.round(s.eclipses)}</div><div class="lbl">Eclipses (approx., worldwide)</div></div>
+  `;
+}
+
+/* ============== LIVE ORBIT / 3D GLOBE (Three.js, procedural textures) ============== */
+let globeState = null;
+function makeEarthTexture(){
+  const c = document.createElement('canvas'); c.width = 512; c.height = 256;
+  const g = c.getContext('2d');
+  g.fillStyle = '#0b3d6b'; g.fillRect(0,0,512,256);
+  g.fillStyle = '#1f6b3d';
+  const blobs = [[55,95,42],[130,60,26],[190,130,58],[300,75,34],[345,150,46],[420,105,30],[250,185,24],[70,190,20],[470,60,18]];
+  blobs.forEach(([x,y,r])=>{
+    g.beginPath();
+    for(let i=0;i<9;i++){
+      const ang = (i/9)*Math.PI*2;
+      const rad = r*(0.65+Math.random()*0.7);
+      const px = x+Math.cos(ang)*rad, py = y+Math.sin(ang)*rad*0.6;
+      i===0 ? g.moveTo(px,py) : g.lineTo(px,py);
+    }
+    g.closePath(); g.fill();
+  });
+  g.fillStyle = 'rgba(255,255,255,0.88)';
+  g.fillRect(0,0,512,12);
+  g.fillRect(0,244,512,12);
+  const tex = new THREE.CanvasTexture(c);
+  tex.wrapS = THREE.RepeatWrapping;
+  return tex;
+}
+function makeCloudTexture(){
+  const c = document.createElement('canvas'); c.width = 512; c.height = 256;
+  const g = c.getContext('2d');
+  g.clearRect(0,0,512,256);
+  g.fillStyle = 'rgba(255,255,255,0.9)';
+  for(let i=0;i<26;i++){
+    const x = Math.random()*512, y = 20+Math.random()*216, r = 12+Math.random()*26;
+    g.beginPath();
+    for(let j=0;j<6;j++){
+      const ang = (j/6)*Math.PI*2;
+      const rad = r*(0.6+Math.random()*0.6);
+      const px = x+Math.cos(ang)*rad, py = y+Math.sin(ang)*rad*0.5;
+      j===0 ? g.moveTo(px,py) : g.lineTo(px,py);
+    }
+    g.closePath(); g.fill();
+  }
+  const tex = new THREE.CanvasTexture(c);
+  return tex;
+}
+function makeMoonTexture(){
+  const c = document.createElement('canvas'); c.width = 256; c.height = 128;
+  const g = c.getContext('2d');
+  g.fillStyle = '#b9b6ad'; g.fillRect(0,0,256,128);
+  g.fillStyle = 'rgba(120,116,108,0.6)';
+  for(let i=0;i<16;i++){
+    const x = Math.random()*256, y = Math.random()*128, r = 4+Math.random()*12;
+    g.beginPath(); g.arc(x,y,r,0,Math.PI*2); g.fill();
+  }
+  return new THREE.CanvasTexture(c);
+}
+
+function initGlobeScene(retriesLeft){
+  if(retriesLeft === undefined) retriesLeft = 20;
+  if(globeState) return;
+  const stage = document.getElementById('globeStage');
+  if(!stage) return;
+
+  // Three.js loads from a CDN asynchronously — wait for it rather than giving up immediately.
+  if(typeof THREE === 'undefined'){
+    if(retriesLeft > 0){ setTimeout(() => initGlobeScene(retriesLeft-1), 300); return; }
+    stage.innerHTML = `<div class="fallback-note" style="padding:20px 4px;">Couldn't load the 3D engine (blocked network or offline) — the rest of the report still works normally.</div>`;
+    return;
+  }
+
+  const w = stage.clientWidth || 300, h = stage.clientHeight || 300;
+  let scene, camera, renderer;
+  try{
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(42, w/h, 0.1, 100);
+    camera.position.set(0,0,3.6);
+
+    renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+    renderer.setSize(w,h);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    stage.appendChild(renderer.domElement);
+  }catch(e){
+    stage.innerHTML = `<div class="fallback-note" style="padding:20px 4px;">This browser/device couldn't start WebGL for the 3D view — the rest of the report still works normally.</div>`;
+    return;
+  }
+
+  scene.add(new THREE.AmbientLight(0x556080, 0.55));
+  const sun = new THREE.DirectionalLight(0xffffff, 1.15);
+  sun.position.set(4,1.5,3);
+  scene.add(sun);
+
+  const worldGroup = new THREE.Group();
+  scene.add(worldGroup);
+
+  const earthGeo = new THREE.SphereGeometry(1, 48, 48);
+  const earthMat = new THREE.MeshPhongMaterial({map: makeEarthTexture(), shininess:8});
+  const earthMesh = new THREE.Mesh(earthGeo, earthMat);
+  earthMesh.rotation.z = 23.4 * Math.PI/180; // axial tilt
+  worldGroup.add(earthMesh);
+
+  const cloudGeo = new THREE.SphereGeometry(1.015, 48, 48);
+  const cloudMat = new THREE.MeshPhongMaterial({map: makeCloudTexture(), transparent:true, opacity:0.55, depthWrite:false});
+  const cloudMesh = new THREE.Mesh(cloudGeo, cloudMat);
+  cloudMesh.rotation.z = earthMesh.rotation.z;
+  worldGroup.add(cloudMesh);
+
+  const moonPivot = new THREE.Object3D();
+  moonPivot.rotation.x = 0.09;
+  worldGroup.add(moonPivot);
+  const moonGeo = new THREE.SphereGeometry(0.27, 24, 24);
+  const moonMat = new THREE.MeshPhongMaterial({map: makeMoonTexture()});
+  const moonMesh = new THREE.Mesh(moonGeo, moonMat);
+  moonMesh.position.set(2.3, 0, 0);
+  moonPivot.add(moonMesh);
+
+  const orbitPts = [];
+  for(let i=0;i<=64;i++){
+    const a = (i/64)*Math.PI*2;
+    orbitPts.push(new THREE.Vector3(Math.cos(a)*2.3, 0, Math.sin(a)*2.3));
+  }
+  const orbitGeo = new THREE.BufferGeometry().setFromPoints(orbitPts);
+  const orbitMat = new THREE.LineBasicMaterial({color:0x6b7bb8, transparent:true, opacity:0.35});
+  moonPivot.add(new THREE.Line(orbitGeo, orbitMat));
+
+  let isDragging = false, lastX=0, lastY=0, autoSpin = true;
+  stage.addEventListener('pointerdown', e => { isDragging = true; autoSpin = false; lastX = e.clientX; lastY = e.clientY; stage.setPointerCapture(e.pointerId); });
+  stage.addEventListener('pointermove', e => {
+    if(!isDragging) return;
+    const dx = e.clientX - lastX, dy = e.clientY - lastY;
+    worldGroup.rotation.y += dx * 0.006;
+    worldGroup.rotation.x = Math.max(-1.1, Math.min(1.1, worldGroup.rotation.x + dy * 0.006));
+    lastX = e.clientX; lastY = e.clientY;
+  });
+  ['pointerup','pointercancel','pointerleave'].forEach(evt =>
+    stage.addEventListener(evt, () => { isDragging = false; })
+  );
+
+  function resize(){
+    const nw = stage.clientWidth, nh = stage.clientHeight;
+    if(!nw || !nh) return;
+    renderer.setSize(nw, nh);
+    camera.aspect = nw/nh;
+    camera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize', resize);
+
+  function animate(){
+    requestAnimationFrame(animate);
+    earthMesh.rotation.y += 0.006;
+    cloudMesh.rotation.y += 0.0022;
+    moonPivot.rotation.y += 0.0016;
+    if(autoSpin) worldGroup.rotation.y += 0.0009;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  globeState = {scene, camera, renderer};
+}
+
+/* ============== TIMELINE OF YOUR LIFE ============== */
+function renderLifeTimeline(){
+  const now = new Date();
+  const totalDays = Math.floor((now - birthDate)/86400000);
+  const milestoneDays = [1000, 5000, 10000, 15000, 20000, 25000, 30000];
+  const tl = document.getElementById('lifeTimeline');
+
+  const items = [{day:0, kind:'birth'}];
+  for(const m of milestoneDays) items.push({day:m, kind:'milestone'});
+  items.push({day:totalDays, kind:'today'});
+  items.sort((a,b) => a.day - b.day);
+
+  let html = '';
+  for(const item of items){
+    const isPast = totalDays >= item.day && item.kind !== 'today';
+    const itemDate = new Date(birthDate.getTime() + item.day*86400000);
+    const dateLabel = `${MONTHS[itemDate.getMonth()]} ${itemDate.getDate()}, ${itemDate.getFullYear()}`;
+    let label, desc, cls;
+    if(item.kind === 'birth'){
+      label = `DAY 0 · ${dateLabel}`; desc = 'You arrived.'; cls = '';
+    } else if(item.kind === 'today'){
+      label = `TODAY · DAY ${item.day.toLocaleString()}`; desc = 'Right now, mid-story.'; cls = 'future';
+    } else {
+      label = `DAY ${item.day.toLocaleString()} · ${dateLabel}`;
+      desc = isPast
+        ? `Already behind you — ${(item.day/365.25).toFixed(1)} years into the journey.`
+        : `Still ahead — arrives in ${Math.ceil((itemDate-now)/86400000).toLocaleString()} days.`;
+      cls = isPast ? '' : 'future';
+    }
+    html += `<div class="tl-item ${cls}"><div class="tl-label">${label}</div><div class="tl-desc">${desc}</div></div>`;
+  }
+  tl.innerHTML = html;
+}
+
+/* ============== THEN & NOW EXPLORER (curated historical estimates, interpolated) ============== */
+const INTERNET_USERS_TABLE = [ // millions of users, worldwide
+  [1993,3],[1995,16],[1998,147],[2000,413],[2003,778],[2005,1024],[2007,1373],
+  [2010,2023],[2013,2712],[2015,3185],[2017,3812],[2019,4131],[2020,4536],
+  [2022,5300],[2023,5400],[2024,5500],[2025,5600],[2026,5680]
+];
+const GDP_TABLE = [ // world nominal GDP, trillion USD
+  [1990,22.8],[1995,30.6],[2000,33.8],[2005,47.3],[2008,63.5],[2010,66.6],
+  [2012,74.9],[2015,75.2],[2018,86.5],[2020,85.3],[2022,101.6],[2023,105.4],
+  [2024,109.5],[2025,112.0],[2026,114.5]
+];
+const CO2_TABLE = [ // billion tonnes CO2, fossil fuel + industry, global
+  [1990,22.5],[1995,23.5],[2000,25.4],[2005,29.0],[2010,33.5],[2015,35.5],
+  [2018,36.7],[2020,34.8],[2022,37.1],[2023,37.6],[2024,37.8],[2025,37.9],[2026,38.0]
+];
+function interpTable(table, year){
+  if(year <= table[0][0]) return table[0][1];
+  if(year >= table[table.length-1][0]) return table[table.length-1][1];
+  for(let i=0;i<table.length-1;i++){
+    const [y1,v1] = table[i], [y2,v2] = table[i+1];
+    if(year >= y1 && year <= y2) return v1 + (v2-v1)*((year-y1)/(y2-y1));
+  }
+  return table[table.length-1][1];
+}
+const FASTEST_COMPUTER_ERAS = [
+  [0,'Cray-1-class vector supercomputers (~160 megaFLOPS)'],
+  [1985,'Connection Machine / Cray Y-MP era (~1–16 gigaFLOPS)'],
+  [1997,'ASCI Red — first teraFLOPS-class supercomputer'],
+  [2004,'Blue Gene/L (~280 teraFLOPS)'],
+  [2008,'IBM Roadrunner / Jaguar (~1–2 petaFLOPS)'],
+  [2013,'Tianhe-2 (~34 petaFLOPS)'],
+  [2018,'Summit (~148 petaFLOPS)'],
+  [2020,'Fugaku (~442 petaFLOPS)'],
+  [2022,'Frontier — first exaFLOP-class supercomputer (~1.1 exaFLOPS)'],
+  [2024,'El Capitan-class exascale systems (~2+ exaFLOPS)'],
+];
+const POPULAR_PHONE_ERAS = [
+  [0,'Car phones & early Motorola "bricks" — mobiles were rare'],
+  [1996,'Nokia 2110 / 6110 era — mobiles go mainstream'],
+  [2000,'Nokia 3310 — one of the best-selling handsets ever'],
+  [2004,'Motorola RAZR V3'],
+  [2007,'Original iPhone launches the smartphone era'],
+  [2010,'iPhone 4 / early Android flagships'],
+  [2013,'iPhone 5s / Samsung Galaxy S4'],
+  [2016,'iPhone 7 / Galaxy S7 — edge-to-edge design race begins'],
+  [2020,'iPhone 12/13 & Galaxy S21 — 5G goes mainstream'],
+  [2024,'iPhone 16 / Galaxy S25 — AI-integrated flagships'],
+];
+function lookupEra(table, year){
+  let result = table[0][1];
+  for(const [y,label] of table){ if(year >= y) result = label; }
+  return result;
+}
+function renderThenNow(ctxData){
+  const birthYear = ctxData.year;
+  const nowYear = new Date().getFullYear();
+  const slider = document.getElementById('thenNowSlider');
+  slider.min = birthYear;
+  slider.max = Math.max(nowYear, birthYear+1);
+  slider.value = birthYear;
+
+  function paint(year){
+    document.getElementById('thenNowYear').textContent = year;
+    const grid = document.getElementById('thenNowGrid');
+    const pop = populationAtYear(year), popNow = populationAtYear(nowYear);
+    const net = interpTable(INTERNET_USERS_TABLE, year), netNow = interpTable(INTERNET_USERS_TABLE, nowYear);
+    const gdp = interpTable(GDP_TABLE, year), gdpNow = interpTable(GDP_TABLE, nowYear);
+    const co2 = interpTable(CO2_TABLE, year), co2Now = interpTable(CO2_TABLE, nowYear);
+    const computer = lookupEra(FASTEST_COMPUTER_ERAS, year);
+    const phone = lookupEra(POPULAR_PHONE_ERAS, year);
+    const cells = [
+      ['🌍 World population', `${pop.toFixed(2)}B`, `Today: ${popNow.toFixed(2)}B`],
+      ['🌐 Internet users', `~${net.toFixed(0)}M`, `Today: ~${netNow.toFixed(0)}M`],
+      ['💻 Fastest computer', computer, ''],
+      ['📱 Popular phone', phone, ''],
+      ['💰 World GDP', `$${gdp.toFixed(1)}T`, `Today: $${gdpNow.toFixed(1)}T`],
+      ['🏭 CO₂ emissions', `${co2.toFixed(1)}B tonnes/yr`, `Today: ${co2Now.toFixed(1)}B tonnes/yr`],
+    ];
+    grid.innerHTML = cells.map(([lbl,v,sub]) => `
+      <div class="tn-cell"><div class="tn-lbl">${lbl}</div><div class="tn-v">${v}</div>${sub?`<div class="tn-lbl" style="margin-top:6px; text-transform:none; letter-spacing:0;">${sub}</div>`:''}</div>
+    `).join('');
+  }
+  paint(birthYear);
+  slider.oninput = () => paint(parseInt(slider.value,10));
+
+  initCountrySelect();
+}
+
+/* ---- Country comparison (REST Countries API — live, no key) ---- */
+const COMMON_COUNTRIES = [
+  ['Nepal','NP'],['India','IN'],['United States','US'],['United Kingdom','GB'],['China','CN'],
+  ['Japan','JP'],['Australia','AU'],['Canada','CA'],['Germany','DE'],['France','FR'],
+  ['Brazil','BR'],['South Africa','ZA'],['Bangladesh','BD'],['Pakistan','PK'],['Indonesia','ID'],
+  ['Mexico','MX'],['Russia','RU'],['Nigeria','NG'],['Egypt','EG'],['Italy','IT']
+];
+let countrySelectInit = false;
+function initCountrySelect(){
+  if(countrySelectInit) return;
+  countrySelectInit = true;
+  const sel = document.getElementById('countrySelect');
+  COMMON_COUNTRIES.forEach(([name,code]) => {
+    const opt = document.createElement('option');
+    opt.value = code; opt.textContent = name;
+    sel.appendChild(opt);
+  });
+  sel.addEventListener('change', async () => {
+    const code = sel.value;
+    const out = document.getElementById('countryCompare');
+    if(!code){ out.innerHTML = ''; return; }
+    out.innerHTML = `<div class="fallback-note">Looking up live data…</div>`;
+    const json = await fetchJSON(`https://restcountries.com/v3.1/alpha/${code}?fields=name,population,capital,region,flag,area`);
+    const c = Array.isArray(json) ? json[0] : json;
+    if(!c || !c.population){
+      out.innerHTML = `<div class="fallback-note">Couldn't reach the REST Countries API right now — try again in a moment.</div>`;
+      return;
+    }
+    const worldPop = populationAtYear(new Date().getFullYear()) * 1e9;
+    const share = (c.population / worldPop) * 100;
+    out.innerHTML = `
+      <div class="snap-grid">
+        <div class="snap-item"><div class="snap-icon">${c.flag||'🏳️'}</div><div><h4>${c.name.common}</h4><div class="v">${c.population.toLocaleString()} people</div></div></div>
+        <div class="snap-item"><div class="snap-icon">📍</div><div><h4>Capital</h4><div class="v">${(c.capital||['—']).join(', ')}</div></div></div>
+        <div class="snap-item"><div class="snap-icon">🌐</div><div><h4>Region</h4><div class="v">${c.region||'—'}</div></div></div>
+        <div class="snap-item"><div class="snap-icon">📊</div><div><h4>Share of world population today</h4><div class="v">${share.toFixed(2)}%</div></div></div>
+      </div>
+      <span class="src">Source: REST Countries API (live).</span>
+    `;
+  });
+}
+
+/* ============== COSMIC MESSAGE ============== */
+function buildCosmicMessage(ctxData){
+  const { year, weekday, moon, zodiac, era, pop } = ctxData;
+  const place = document.getElementById('birthPlace').value.trim();
+  const placeText = place ? ` in <span class="accent2">${place}</span>` : '';
+  const templates = [
+    `The universe had already been expanding for roughly 13.8 billion years before your nakshatra aligned${placeText}. On a <span class="accent">${weekday}</span> in ${year}, while the moon hung as a <span class="accent">${moon.name.toLowerCase()}</span> overhead, you arrived into the <span class="accent2">${era.label}</span> — one of ~${pop.toFixed(2)} billion people sharing the planet at that exact moment. The stars did not pause. Earth simply kept turning, a little more meaningfully than before.`,
+    `Somewhere in the quiet turning of a <span class="accent">${weekday}</span>, under a <span class="accent">${moon.name.toLowerCase()}</span> sky, the universe made room for one more story${placeText}. You stepped into a world of ${pop.toFixed(2)} billion others, right at the threshold of the <span class="accent2">${era.label}</span>. Nothing about the cosmos changed that day — except that it now had you in it.`,
+    `13.8 billion years of cosmic history led to a single <span class="accent">${weekday}</span> in ${year}${placeText}. The moon was <span class="accent">${moon.name.toLowerCase()}</span>, the sun stood beneath the sign of <span class="accent2">${zodiac.name}</span>, and Earth carried roughly ${pop.toFixed(2)} billion passengers — you among them, arriving right as the world entered its <span class="accent2">${era.label}</span>.`
+  ];
+  const idx = (year + birthDate.getMonth() + birthDate.getDate()) % templates.length;
+  return templates[idx];
+}
+
+/* ============== DIVERGENT TIMELINES ============== */
+document.querySelectorAll('.shift-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const shift = parseInt(btn.dataset.shift, 10);
+    const altDate = new Date(birthDate);
+    altDate.setFullYear(altDate.getFullYear() + shift);
+    const altWeekday = WEEKDAYS[altDate.getDay()];
+    const altEra = getEra(altDate.getFullYear());
+    const altPop = populationAtYear(altDate.getFullYear());
+    const sameEra = altEra.label === getEra(birthDate.getFullYear()).label;
+    const result = document.getElementById('shiftResult');
+    result.style.display = 'block';
+    result.innerHTML = `Born ${shift > 0 ? 'one year later' : 'one year earlier'}, on ${MONTHS[altDate.getMonth()]} ${altDate.getDate()}, ${altDate.getFullYear()}, you'd have arrived on a <span style="color:var(--cyan)">${altWeekday}</span> into ${sameEra ? 'the same' : `a shifted`} <span style="color:var(--violet)">${altEra.label}</span>, alongside roughly ${altPop.toFixed(2)} billion others — ${sameEra ? 'the cosmic backdrop barely would have changed.' : 'a meaningfully different technological moment.'}`;
+  });
+});
+
+/* ============== TIME CAPSULE (persistent storage, browser/account-scoped) ============== */
+function capsuleKeyPrefix(){ return 'capsule:'; }
+
+async function sealCapsule(){
+  const msgEl = document.getElementById('capsuleMsg');
+  const dateEl = document.getElementById('capsuleDate');
+  const status = document.getElementById('capsuleStatus');
+  const message = msgEl.value.trim();
+  const openDate = dateEl.value;
+  if(!message){ status.textContent = 'Write something to your future self first.'; return; }
+  if(!openDate){ status.textContent = 'Choose a date to open this capsule.'; return; }
+  const todayStr = new Date().toISOString().split('T')[0];
+  if(openDate <= todayStr){ status.textContent = 'Pick a date in the future — that\'s the whole idea of a time capsule.'; return; }
+
+  const id = `${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
+  const record = {message, sealedAt: new Date().toISOString(), openDate};
+  try{
+    const res = await window.storage.set(`${capsuleKeyPrefix()}${id}`, JSON.stringify(record), false);
+    if(!res){ status.textContent = 'Could not seal the capsule — storage is unavailable right now.'; return; }
+    status.textContent = `Sealed! It'll be ready to open on ${openDate}.`;
+    msgEl.value = ''; dateEl.value = '';
+    loadCapsules();
+  }catch(e){
+    status.textContent = 'Could not seal the capsule — storage is unavailable right now.';
+  }
+}
+
+async function deleteCapsule(id){
+  try{ await window.storage.delete(`${capsuleKeyPrefix()}${id}`, false); }catch(e){ /* ignore */ }
+  loadCapsules();
+}
+
+function mailtoForCapsule(record){
+  const subject = encodeURIComponent('My Time Capsule Letter — open on ' + record.openDate);
+  const body = encodeURIComponent(`I wrote this to myself, to be read on ${record.openDate}:\n\n${record.message}\n\n— sealed via Mero Nakshatra`);
+  return `mailto:?subject=${subject}&body=${body}`;
+}
+
+async function loadCapsules(){
+  const list = document.getElementById('capsuleList');
+  if(!list) return;
+  list.innerHTML = `<div class="fallback-note">Checking for sealed capsules…</div>`;
+  try{
+    const idx = await window.storage.list(capsuleKeyPrefix(), false);
+    const keys = (idx && idx.keys) || [];
+    if(!keys.length){ list.innerHTML = ''; return; }
+    const todayStr = new Date().toISOString().split('T')[0];
+    const items = [];
+    for(const key of keys){
+      try{
+        const res = await window.storage.get(key, false);
+        if(res && res.value){
+          const record = JSON.parse(res.value);
+          const id = key.replace(capsuleKeyPrefix(), '');
+          items.push({id, record, ready: record.openDate <= todayStr});
+        }
+      }catch(e){ /* skip unreadable entry */ }
+    }
+    items.sort((a,b) => a.record.openDate.localeCompare(b.record.openDate));
+    if(!items.length){ list.innerHTML = ''; return; }
+    list.innerHTML = items.map(({id, record, ready}) => `
+      <div class="capsule-item ${ready?'ready':''}">
+        <div class="cap-meta">${ready ? '🔓 READY — sealed ' + record.sealedAt.split('T')[0] : '🔒 SEALED · opens ' + record.openDate}</div>
+        ${ready
+          ? `<div class="cap-msg">${record.message.replace(/</g,'&lt;')}</div>`
+          : `<div class="cap-msg">A message is waiting, sealed until ${record.openDate}.</div>`}
+        <div style="display:flex; gap:14px; align-items:center; margin-top:8px;">
+          <a class="music-link" href="${mailtoForCapsule(record)}" style="font-size:11px;">✉ Email myself a copy</a>
+          <button class="cap-del" data-id="${id}">Delete capsule</button>
+        </div>
+      </div>
+    `).join('');
+    list.querySelectorAll('.cap-del').forEach(btn => btn.addEventListener('click', () => deleteCapsule(btn.dataset.id)));
+  }catch(e){
+    list.innerHTML = `<div class="fallback-note">Couldn't reach capsule storage right now.</div>`;
+  }
+}
+
+document.getElementById('capsuleSealBtn').addEventListener('click', sealCapsule);
+(function(){
+  const capDate = document.getElementById('capsuleDate');
+  const tmr = new Date(); tmr.setDate(tmr.getDate()+1);
+  capDate.min = tmr.toISOString().split('T')[0];
+})();
+
+/* ============== COHORT ============== */
+function renderCohort(year){
+  const babies = babiesSameDay(year);
+  document.getElementById('cohortVal').textContent = babies.toLocaleString();
+}
+
+/* ============== CARD RENDER ============== */
+function renderCard(ctxData){
+  const canvas = document.getElementById('cardCanvas');
+  const cctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  // background
+  const grad = cctx.createLinearGradient(0,0,W,H);
+  grad.addColorStop(0, '#0c1230');
+  grad.addColorStop(0.5, '#0a0e25');
+  grad.addColorStop(1, '#05060f');
+  cctx.fillStyle = grad;
+  cctx.fillRect(0,0,W,H);
+
+  // nebula glow blobs
+  function blob(x,y,r,color){
+    const g = cctx.createRadialGradient(x,y,0,x,y,r);
+    g.addColorStop(0,color);
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    cctx.fillStyle = g;
+    cctx.fillRect(0,0,W,H);
+  }
+  blob(W*0.15,H*0.12,380,'rgba(155,124,246,0.30)');
+  blob(W*0.9,H*0.3,340,'rgba(77,239,227,0.22)');
+  blob(W*0.5,H*0.95,420,'rgba(107,79,214,0.25)');
+
+  // stars
+  for(let i=0;i<140;i++){
+    const x = Math.random()*W, y = Math.random()*H*0.75;
+    const r = Math.random()*1.6;
+    cctx.fillStyle = `rgba(255,255,255,${Math.random()*0.7+0.2})`;
+    cctx.beginPath(); cctx.arc(x,y,r,0,Math.PI*2); cctx.fill();
+  }
+
+  // border
+  cctx.strokeStyle = 'rgba(77,239,227,0.35)';
+  cctx.lineWidth = 2;
+  cctx.strokeRect(16,16,W-32,H-32);
+
+  // header
+  cctx.textAlign = 'center';
+  cctx.fillStyle = '#4defe3';
+  cctx.font = '600 22px "JetBrains Mono", monospace';
+  cctx.fillText('MISSION CONTROL · COSMIC ORIGIN SCAN', W/2, 90);
+
+  cctx.fillStyle = '#ffffff';
+  cctx.font = '900 54px "Orbitron", sans-serif';
+  cctx.fillText('MERO NAKSHATRA', W/2, 150);
+  cctx.font = '500 26px "Space Grotesk", sans-serif';
+  cctx.fillStyle = '#9aa3c7';
+  cctx.fillText('मेरो नक्षत्र', W/2, 188);
+
+  // divider
+  cctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  cctx.beginPath(); cctx.moveTo(W*0.2,220); cctx.lineTo(W*0.8,220); cctx.stroke();
+
+  // birth date big
+  const dateStr = `${MONTHS[birthDate.getMonth()]} ${birthDate.getDate()}, ${birthDate.getFullYear()}`;
+  cctx.fillStyle = '#ffffff';
+  cctx.font = '700 40px "JetBrains Mono", monospace';
+  cctx.fillText(dateStr, W/2, 280);
+  cctx.font = '500 18px "Space Grotesk", sans-serif';
+  cctx.fillStyle = '#9b7cf6';
+  cctx.fillText(ctxData.era.label.toUpperCase(), W/2, 314);
+
+  // stat blocks
+  const now = new Date();
+  const age = computeAgeBreakdown(birthDate, now);
+  const stats = [
+    [`${age.years}y ${age.months}m ${age.days}d`, 'AGE'],
+    [age.totalDays.toLocaleString(), 'DAYS LIVED'],
+    [age.totalSeconds.toLocaleString(), 'SECONDS LIVED'],
+  ];
+  const boxW = (W-32-40*2)/3 - 0;
+  let bx = 60;
+  const by = 360, bh = 130;
+  stats.forEach(([val,label], i)=>{
+    const x = 56 + i*((W-112)/3);
+    const w = (W-112)/3 - 16;
+    cctx.fillStyle = 'rgba(255,255,255,0.05)';
+    cctx.strokeStyle = 'rgba(255,255,255,0.12)';
+    cctx.lineWidth = 1;
+    roundRect(cctx, x, by, w, bh, 14);
+    cctx.fill(); cctx.stroke();
+    cctx.fillStyle = '#4defe3';
+    cctx.font = '700 22px "JetBrains Mono", monospace';
+    cctx.textAlign='center';
+    wrapText(cctx, val, x+w/2, by+58, w-16, 24);
+    cctx.fillStyle = '#9aa3c7';
+    cctx.font = '500 11px "JetBrains Mono", monospace';
+    cctx.fillText(label, x+w/2, by+bh-18);
+  });
+
+  // moon / zodiac / weekday row
+  const rowCenterY = 540;
+  const colW = (W-112)/3;
+
+  // Column 0: real moon graphic + phase name
+  const moonColX = 56 + colW/2;
+  drawMoonPhase(cctx, moonColX, rowCenterY - 14, 24, ctxData.moon.phaseFrac);
+  cctx.fillStyle = '#dde3ff';
+  cctx.font = '500 14px "Space Grotesk", sans-serif';
+  cctx.textAlign = 'center';
+  cctx.fillText(ctxData.moon.name, moonColX, rowCenterY + 32);
+
+  // Columns 1 & 2: zodiac + weekday as text
+  const infoItems = [
+    [ctxData.zodiac.icon + ' ' + ctxData.zodiac.name],
+    ['📅 ' + ctxData.weekday]
+  ];
+  infoItems.forEach(([txt], i)=>{
+    const x = 56 + (i+1)*colW + colW/2;
+    cctx.fillStyle = '#dde3ff';
+    cctx.font = '500 17px "Space Grotesk", sans-serif';
+    cctx.textAlign = 'center';
+    cctx.fillText(txt, x, rowCenterY);
+  });
+
+  // quote
+  cctx.fillStyle = '#eaf0ff';
+  cctx.font = 'italic 400 19px "Space Grotesk", sans-serif';
+  cctx.textAlign='center';
+  const quote = `"One of ${ctxData.pop.toFixed(2)} billion humans sharing the cosmos on a ${ctxData.weekday}."`;
+  wrapText(cctx, quote, W/2, 650, W-160, 28);
+
+  // footer
+  cctx.fillStyle = 'rgba(255,255,255,0.35)';
+  cctx.font = '500 13px "JetBrains Mono", monospace';
+  cctx.fillText('mero-nakshatra.app', W/2, H-50);
+}
+
+function roundRect(c,x,y,w,h,r){
+  c.beginPath();
+  c.moveTo(x+r,y);
+  c.arcTo(x+w,y,x+w,y+h,r);
+  c.arcTo(x+w,y+h,x,y+h,r);
+  c.arcTo(x,y+h,x,y,r);
+  c.arcTo(x,y,x+w,y,r);
+  c.closePath();
+}
+function wrapText(c, text, x, y, maxWidth, lineHeight){
+  const words = text.split(' ');
+  let line = '';
+  let lines = [];
+  for(let n=0;n<words.length;n++){
+    const test = line + words[n] + ' ';
+    if(c.measureText(test).width > maxWidth && n > 0){
+      lines.push(line);
+      line = words[n] + ' ';
+    } else { line = test; }
+  }
+  lines.push(line);
+  const startY = y - ((lines.length-1)*lineHeight)/2;
+  lines.forEach((l,i)=> c.fillText(l.trim(), x, startY + i*lineHeight));
+}
+
+/* ============== DOWNLOAD / SHARE ============== */
+function getCardDataURL(){
+  return document.getElementById('cardCanvas').toDataURL('image/png');
+}
+
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  try{
+    const dataUrl = getCardDataURL();
+    const link = document.createElement('a');
+    link.download = 'mero-nakshatra-card.png';
+    link.href = dataUrl;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }catch(e){
+    console.error('Download failed:', e);
+  }
+});
+
+// Guaranteed fallback: many embedded/sandboxed browser contexts silently block the
+// anchor "download" attribute. Opening the image in a new tab always works, and
+// the user can long-press (mobile) or right-click → Save Image (desktop) from there.
+document.getElementById('openImageBtn').addEventListener('click', () => {
+  try{
+    const dataUrl = getCardDataURL();
+    const win = window.open();
+    if(win){
+      win.document.write(`<title>Mero Nakshatra — Your Cosmic Card</title>
+        <body style="margin:0;background:#05060f;display:flex;align-items:center;justify-content:center;min-height:100vh;">
+          <img src="${dataUrl}" style="max-width:94%;height:auto;border-radius:14px;" />
+        </body>`);
+    } else {
+      alert('Your browser blocked the popup. Please allow popups for this page, then try again.');
+    }
+  }catch(e){
+    console.error('Open image failed:', e);
+  }
+});
+
+document.getElementById('shareBtn').addEventListener('click', async () => {
+  const canvas = document.getElementById('cardCanvas');
+  try{
+    const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+    const file = new File([blob], 'mero-nakshatra.png', {type:'image/png'});
+    if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file], title:'My Cosmic Birth Report', text:'Discover yours at Mero Nakshatra'});
+    } else {
+      document.getElementById('openImageBtn').click();
+    }
+  }catch(e){ /* user cancelled or unsupported — ignore */ }
+});
+
+/* ============== PANEL REVEAL ============== */
+function revealPanels(){
+  const panels = document.querySelectorAll('.panel');
+  panels.forEach((p, i) => {
+    setTimeout(()=> p.classList.add('show'), 180 * i);
+  });
+}
+
+/* ============== MAIN FLOW ============== */
+document.getElementById('genBtn').addEventListener('click', async () => {
+  const dateVal = document.getElementById('birthDate').value;
+  const timeVal = document.getElementById('birthTime').value;
+  const errEl = document.getElementById('errMsg');
+
+  if(!dateVal){
+    errEl.style.display = 'block';
+    return;
+  }
+  errEl.style.display = 'none';
+
+  const [y,m,d] = dateVal.split('-').map(Number);
+  if(timeVal){
+    const [hh,mm] = timeVal.split(':').map(Number);
+    birthDate = new Date(y, m-1, d, hh, mm, 0);
+    hasTime = true;
+  } else {
+    birthDate = new Date(y, m-1, d, 12, 0, 0);
+    hasTime = false;
+  }
+
+  const now = new Date();
+  if(birthDate > now){
+    errEl.textContent = 'That date is in the future — even the cosmos needs you to have actually arrived.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  const btn = document.getElementById('genBtn');
+  btn.disabled = true;
+  btn.textContent = 'Calibrating instruments…';
+
+  // warp / space-zoom transition
+  const warp = document.getElementById('warp');
+  warp.style.background = 'rgba(5,6,15,1)';
+  warp.classList.add('active');
+  runWarpZoom(900);
+
+  await new Promise(r => setTimeout(r, 900));
+
+  document.getElementById('heroSection').style.display = 'none';
+  warp.classList.remove('active');
+
+  const report = document.getElementById('report');
+  report.style.display = 'block';
+
+  const dateLabel = `${MONTHS[birthDate.getMonth()]} ${birthDate.getDate()}, ${birthDate.getFullYear()}`;
+  document.getElementById('reportSub').textContent = `${dateLabel}${hasTime ? ' · ' + document.getElementById('birthTime').value : ' · time unspecified'}`;
+
+  renderTelemetry();
+  startLiveTickers();
+  const ctxData = renderWorldSnapshot();
+  const placeName = document.getElementById('birthPlace').value.trim();
+
+  // Fast, synchronous/local renders first
+  document.getElementById('cosmicMsg').innerHTML = buildCosmicMessage(ctxData);
+  renderCohort(ctxData.year);
+  renderTechPanel(ctxData);
+  renderLifeStats();
+  renderLifeTimeline();
+  renderSkyMap(ctxData);
+  renderConstellationMap(ctxData);
+  renderMusicPanel(ctxData.year);
+  renderCard(ctxData);
+  renderOrbitReadout();
+  renderThenNow(ctxData);
+  loadCapsules();
+  currentData = ctxData;
+
+  setTimeout(() => initGlobeScene(), 50);
+
+  revealPanels();
+  report.scrollIntoView({behavior:'smooth'});
+
+  btn.disabled = false;
+  btn.textContent = 'Generate My Nakshatra';
+
+  // Live network-backed renders — each independent, so one slow/failed source
+  // never blocks or breaks the others.
+  renderHistoricalEvents(birthDate);
+  renderSpacePanel(ctxData);
+  renderMoviesPanel(ctxData.year);
+  renderTVPanel(ctxData.year);
+  renderGamesPanel(ctxData.year);
+  renderSportsPanel(ctxData.year);
+  renderEconomyPanel(birthDate);
+  renderWeatherPanel(birthDate, placeName).then(geo => renderMapPanel(geo));
+});
+
+document.getElementById('restartBtn').addEventListener('click', () => {
+  if(liveTimer) clearInterval(liveTimer);
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('show'));
+  document.getElementById('report').style.display = 'none';
+  document.getElementById('heroSection').style.display = 'flex';
+  document.getElementById('shiftResult').style.display = 'none';
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+// default date guard
+(function(){
+  const dateInput = document.getElementById('birthDate');
+  const todayStr = new Date().toISOString().split('T')[0];
+  dateInput.max = todayStr;
+})();
+</script>
+</body>
+</html>
